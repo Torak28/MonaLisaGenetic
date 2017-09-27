@@ -1,5 +1,7 @@
 # MonaLisaGenetic
 
+### Czas: do końca października
+
 ### ToDo:
 
  * Moduł tworzenia pustego obrazu na podstawie orginału w pliku
