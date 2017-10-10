@@ -1,5 +1,4 @@
 import numpy
-from random import randint
 from PIL import Image
 
 # read image as RGB and add alpha (transparency)
@@ -7,11 +6,6 @@ im = Image.open("MonaLisa.png").convert("RGBA")
 
 # convert to numpy (for convenience)
 tab = numpy.asarray(im)
-
-#f = open('test.txt', 'w')
-#for item in tab:
-#    f.write("%s\n" %item)
-#f.close()
 
 def randomElem():
     ret = numpy.empty([1], int)
@@ -26,5 +20,10 @@ def randomPictur(N):
            ret[i][j] = randomElem()
    return ret
 
-newIm = Image.fromarray(randomPictur(tab), "RGBA")
+def darkPicture(N):
+    ret = numpy.zeros_like(N)
+    return ret
+
+newIm = Image.fromarray(darkPicture(tab), "RGBA")
+newIm.show()
 newIm.save("out3.png")
