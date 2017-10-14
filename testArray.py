@@ -28,6 +28,7 @@ def distance(org, N):
             ret += int(math.sqrt(pow(int(N[i][j][0]) - int(org[i][j][0]),2) + pow(int(N[i][j][1]) - int(org[i][j][1]),2) + pow(int(N[i][j][2]) - int(org[i][j][2]),2)))
     return ret
 
+# Mutacja
 def square(org, N):
     x = numpy.random.randint(org.shape[0])
     y = numpy.random.randint(org.shape[1])
@@ -42,10 +43,11 @@ def square(org, N):
             for j in range(N.shape[1]):
                 if j >=y and j <= h:
                     N[i][j][0] = R
-                    N[i][j][0] = G
-                    N[i][j][0] = B
-                    N[i][j][0] = A
+                    N[i][j][1] = G
+                    N[i][j][2] = B
+                    N[i][j][3] = A
     return N
+
 
 # read image as RGB and add alpha (transparency)
 im = Image.open("MonaLisa.png").convert("RGBA")
@@ -53,7 +55,7 @@ im = Image.open("MonaLisa.png").convert("RGBA")
 tab = numpy.asarray(im, dtype='uint8')
 
 test = darkPicture(tab)
-for i in range(100):
+for i in range(300):
     test = square(tab, test)
 
 newIm = Image.fromarray(test, "RGBA")
