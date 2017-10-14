@@ -1,12 +1,6 @@
 import numpy
 import math
-from PIL import Image
-
-# read image as RGB and add alpha (transparency)
-im = Image.open("MonaLisa.png").convert("RGBA")
-
-# convert to numpy (for convenience)
-tab = numpy.asarray(im)
+from PIL import Image, ImageStat
 
 def randomElem():
     ret = numpy.empty([1], int)
@@ -31,12 +25,18 @@ def distance(org, N):
     ret = 0
     for i in range(org.shape[0]):
         for j in range(org.shape[1]):
-            ret += math.sqrt(pow(N[i][j][0] - org[i][j][0],2) + pow(N[i][j][1] - org[i][j][1],2) + pow(N[i][j][2] - org[i][j][2],2))
+            ret += int(math.sqrt(pow(int(N[i][j][0]) - int(org[i][j][0]),2) + pow(int(N[i][j][1]) - int(org[i][j][1]),2) + pow(int(N[i][j][2]) - int(org[i][j][2]),2)))
     return ret
 
+# read image as RGB and add alpha (transparency)
+im = Image.open("MonaLisa.png").convert("RGBA")
+# convert to numpy (for convenience)
+tab = numpy.asarray(im, dtype='uint8')
 
+test = randomPictur(tab)
 
-newIm = Image.fromarray(darkPicture(tab), "RGBA")
-print(tab[0][0])
+print(distance(tab,test))
+
+newIm = Image.fromarray(tab, "RGBA")
 newIm.show()
 newIm.save("out3.png")
