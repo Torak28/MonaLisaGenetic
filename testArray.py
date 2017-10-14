@@ -30,6 +30,7 @@ def distance(org, N):
 
 # Mutacja
 def square(org, N):
+    tmp = darkPicture(N)
     x = numpy.random.randint(org.shape[0])
     y = numpy.random.randint(org.shape[1])
     w = numpy.random.random_integers(x + 1,org.shape[0])
@@ -42,11 +43,13 @@ def square(org, N):
         if i >= x and i <= w:
             for j in range(N.shape[1]):
                 if j >=y and j <= h:
-                    N[i][j][0] = R
-                    N[i][j][1] = G
-                    N[i][j][2] = B
-                    N[i][j][3] = A
-    return N
+                    tmp[i][j][0] = R
+                    tmp[i][j][1] = G
+                    tmp[i][j][2] = B
+                    tmp[i][j][3] = A
+    ret = Image.alpha_composite(Image.fromarray(N,"RGBA"),Image.fromarray(tmp,"RGBA"))
+    return numpy.asarray(ret, dtype='uint8')
+
 
 
 # read image as RGB and add alpha (transparency)
