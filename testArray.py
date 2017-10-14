@@ -50,7 +50,10 @@ def square(org, N):
     ret = Image.alpha_composite(Image.fromarray(N,"RGBA"),Image.fromarray(tmp,"RGBA"))
     return numpy.asarray(ret, dtype='uint8')
 
-
+# Krzyżowanie
+def Add(P1, P2):
+    ret = Image.alpha_composite(Image.fromarray(P1, "RGBA"), Image.fromarray(P2, "RGBA"))
+    return numpy.asarray(ret, dtype='uint8')
 
 # read image as RGB and add alpha (transparency)
 im = Image.open("MonaLisa.png").convert("RGBA")
@@ -58,10 +61,10 @@ im = Image.open("MonaLisa.png").convert("RGBA")
 tab = numpy.asarray(im, dtype='uint8')
 
 test = darkPicture(tab)
-for i in range(300):
-    test = square(tab, test)
+P1 = square(tab, test)
+P2 = square(tab, test)
+test = Add(P1, P2)
 
 newIm = Image.fromarray(test, "RGBA")
 newIm.show()
-
 #newIm.save("out3.png")
