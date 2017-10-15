@@ -2,8 +2,6 @@ import numpy
 import math
 from PIL import Image
 
-import time
-
 def randomElem():
     ret = numpy.empty([1], int)
     ret = numpy.delete(ret, 0)
@@ -67,26 +65,47 @@ def Add(P1, P2):
     ret = Image.alpha_composite(Image.fromarray(P1, "RGBA"), Image.fromarray(P2, "RGBA"))
     return numpy.asarray(ret, dtype='uint8')
 
+'''
+Główna pętla programu
+'''
+
 # read image as RGB and add alpha (transparency)
 im = Image.open("MonaLisa.png").convert("RGBA")
-# convert to numpy (for convenience)
 tab = numpy.asarray(im, dtype='uint8')
 
+# Sterowanie
+ilosc_w_populacji = 20
+ilosc_petli = 100
+wspolczynnik_mutacji = 0.1
 
-for i in range(300):
-    test = randomPictur(tab)
-    time_d1 = time.time()
-    d1 = distance(tab, tab)
-    t1 = time.time() - time_d1
-    print("Wynik d1: %s --- %s seconds ---" % (d1, t1))
-    time_d2 = time.time()
-    d2 = distance2(tab, tab)
-    t2 = time.time() - time_d2
-    print("Wynik d2: %s --- %s seconds ---" % (d2, t2))
+populacja = []
 
-    winner = "d1" if t1 < t2 else "d2"
-    print("Szybciej: %s" % winner)
+dark = darkPicture(tab)
+fit = distance2(tab, dark)
 
+
+# Inicjalizacja
+for i in range(ilosc_w_populacji):
+    populacja.append({'tab' : dark, 'fit' : fit})
+
+# Życie
+for p in range(ilosc_petli):
+    for w in range(ilosc_w_populacji):
+        # Mutacja
+        if numpy.random.random() < wspolczynnik_mutacji:
+            populacja[w]['tab'] = square(tab,populacja[w]['tab'])
+
+
+
+
+
+
+
+
+
+
+
+#test = randomPictur(tab)
 #newIm = Image.fromarray(test, "RGBA")
 #newIm.show()
 #newIm.save("out3.png")
