@@ -2,6 +2,8 @@ import numpy
 import math
 from PIL import Image
 
+import time
+
 def randomElem():
     ret = numpy.empty([1], int)
     ret = numpy.delete(ret, 0)
@@ -26,6 +28,16 @@ def distance(org, N):
     for i in range(org.shape[0]):
         for j in range(org.shape[1]):
             ret += int(math.sqrt(pow(int(N[i][j][0]) - int(org[i][j][0]),2) + pow(int(N[i][j][1]) - int(org[i][j][1]),2) + pow(int(N[i][j][2]) - int(org[i][j][2]),2)))
+    return ret
+
+# suma różnic kwadratów
+def distance2(org, N):
+    ret = 0
+    for i in range(org.shape[0]):
+        for j in range(org.shape[1]):
+            a = int(org[i][j][0]) + int(org[i][j][1]) + int(org[i][j][2])
+            b = int(N[i][j][0]) + int(N[i][j][1]) + int(N[i][j][2])
+            ret += (a - b) * (a - b)
     return ret
 
 # Mutacja
@@ -60,11 +72,21 @@ im = Image.open("MonaLisa.png").convert("RGBA")
 # convert to numpy (for convenience)
 tab = numpy.asarray(im, dtype='uint8')
 
-test = darkPicture(tab)
-P1 = square(tab, test)
-P2 = square(tab, test)
-test = Add(P1, P2)
 
-newIm = Image.fromarray(test, "RGBA")
-newIm.show()
+for i in range(300):
+    test = randomPictur(tab)
+    time_d1 = time.time()
+    d1 = distance(tab, tab)
+    t1 = time.time() - time_d1
+    print("Wynik d1: %s --- %s seconds ---" % (d1, t1))
+    time_d2 = time.time()
+    d2 = distance2(tab, tab)
+    t2 = time.time() - time_d2
+    print("Wynik d2: %s --- %s seconds ---" % (d2, t2))
+
+    winner = "d1" if t1 < t2 else "d2"
+    print("Szybciej: %s" % winner)
+
+#newIm = Image.fromarray(test, "RGBA")
+#newIm.show()
 #newIm.save("out3.png")
