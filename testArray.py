@@ -65,6 +65,45 @@ def Add(P1, P2):
     ret = Image.alpha_composite(Image.fromarray(P1, "RGBA"), Image.fromarray(P2, "RGBA"))
     return numpy.asarray(ret, dtype='uint8')
 
+def mapFromTo(x,a,b,c,d):
+   ret = (x - a) /(b - a) * (d - c) + c
+   return ret
+
+def matingpool(pop, pop_size):
+    ret = []
+    for k in range(pop_size):
+        kon = int(pop[k]['fit'] * 100)
+        for l in range(kon):
+            ret.append(populacja[k])
+    return ret
+
+def mutate(pop, pop_size, pop_it, org):
+    for i in range(pop_size):
+        if numpy.random.random() < pop_it:
+            pop[i]['tab'] = square(org, pop[i]['tab'])
+    return pop
+
+def score(pop, pop_size, maxFit):
+    for i in range(pop_size):
+        pop[i]['fit'] = mapFromTo(distance2(tab, pop[i]['tab']), 0, maxFit, 0, 1)
+    return pop
+
+def crossover(pool):
+    ret = []
+    child = {}
+    for i in range(len(pool)):
+        parentA = numpy.random.choice(pool)
+        parentB = numpy.random.choice(pool)
+        child['tab'] = Add(parentA['tab'], parentB['tab'])
+        child['fit'] = 100
+        ret.append(child)
+    return ret
+
+def dump_best(pop, it):
+    newIm = Image.fromarray(pop[0]['tab'], "RGBA")
+    newIm.save("E:/INZ/" + str(it) + ".png")
+
+
 '''
 Główna pętla programu
 '''
@@ -84,28 +123,19 @@ dark = darkPicture(tab)
 fit = distance2(tab, dark)
 
 
-# Inicjalizacja
+# Tworzenie N osobnikow losowych
 for i in range(ilosc_w_populacji):
-    populacja.append({'tab' : dark, 'fit' : fit})
+    populacja.append({'tab' : square(tab, dark), 'fit' : fit})
 
 # Życie
 for p in range(ilosc_petli):
-    for w in range(ilosc_w_populacji):
-        # Mutacja
-        if numpy.random.random() < wspolczynnik_mutacji:
-            populacja[w]['tab'] = square(tab,populacja[w]['tab'])
-
-
-
-
-
-
-
-
-
-
-
-#test = randomPictur(tab)
-#newIm = Image.fromarray(test, "RGBA")
-#newIm.show()
-#newIm.save("out3.png")
+    # Mutacja
+    populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, tab)
+    # Ocena( 0 - 100 )
+    populacja = score(populacja, ilosc_w_populacji, fit)
+    # Zrzucanie najlepszego w populacji
+    dump_best(populacja, p)
+    # Tworzenie poli rozrodczej do krzyżowania
+    pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
+    # Krzyzowanie i nowa populacja
+    populacja = crossover(pola_rozrodcza)
