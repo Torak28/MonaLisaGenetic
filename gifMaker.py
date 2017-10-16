@@ -5,10 +5,10 @@ path = 'E:/INZ/'
 len = len(os.listdir(path))
 
 im = []
-Im = Image.open("Gif.gif")
+Im = Image.open("1st_run.gif")
 
 for i in range(len):
     im.append(Image.open(path + str(i) + ".png"))
 
 
-Im.save("Gif.gif", save_all=True, append_images=[img for img in im], loop=1, duration=500)
+Im.save("2nd_run.gif", save_all=True, append_images=[img for img in im], loop=1, duration=500)
