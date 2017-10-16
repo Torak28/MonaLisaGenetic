@@ -119,7 +119,7 @@ tab = numpy.asarray(im, dtype='uint8')
 # Sterowanie
 ilosc_w_populacji = 50
 ilosc_petli = 1000
-wspolczynnik_mutacji = 0.1
+wspolczynnik_mutacji = 0.01
 
 populacja = []
 
