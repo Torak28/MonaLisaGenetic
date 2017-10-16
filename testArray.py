@@ -117,8 +117,8 @@ im = Image.open("MonaLisa.png").convert("RGBA")
 tab = numpy.asarray(im, dtype='uint8')
 
 # Sterowanie
-ilosc_w_populacji = 20
-ilosc_petli = 100
+ilosc_w_populacji = 50
+ilosc_petli = 1000
 wspolczynnik_mutacji = 0.1
 
 populacja = []
