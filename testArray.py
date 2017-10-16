@@ -88,10 +88,10 @@ def score(pop, pop_size, maxFit):
         pop[i]['fit'] = mapFromTo(distance2(tab, pop[i]['tab']), 0, maxFit, 0, 1)
     return pop
 
-def crossover(pool):
+def crossover(pop, pool):
     ret = []
     child = {}
-    for i in range(len(pool)):
+    for i in range(len(pop)):
         parentA = numpy.random.choice(pool)
         parentB = numpy.random.choice(pool)
         child['tab'] = Add(parentA['tab'], parentB['tab'])
@@ -99,8 +99,12 @@ def crossover(pool):
         ret.append(child)
     return ret
 
-def dump_best(pop, it):
-    newIm = Image.fromarray(pop[0]['tab'], "RGBA")
+def dump_best(pop, pop_size,  it):
+    best = pop[0]
+    for i in range(pop_size):
+        if pop[i]['fit'] < best['fit']:
+            best = pop[i]
+    newIm = Image.fromarray(best['tab'], "RGBA")
     newIm.save("E:/INZ/" + str(it) + ".png")
 
 
@@ -128,14 +132,14 @@ for i in range(ilosc_w_populacji):
     populacja.append({'tab' : square(tab, dark), 'fit' : fit})
 
 # Życie
-for p in range(ilosc_petli):
+for p in range(1):
     # Mutacja
     populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, tab)
     # Ocena( 0 - 100 )
     populacja = score(populacja, ilosc_w_populacji, fit)
     # Zrzucanie najlepszego w populacji
-    dump_best(populacja, p)
+    dump_best(populacja, ilosc_w_populacji, p)
     # Tworzenie poli rozrodczej do krzyżowania
     pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
     # Krzyzowanie i nowa populacja
-    populacja = crossover(pola_rozrodcza)
+    populacja = crossover(populacja, pola_rozrodcza)
