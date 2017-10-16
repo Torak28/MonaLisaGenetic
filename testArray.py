@@ -132,7 +132,7 @@ for i in range(ilosc_w_populacji):
     populacja.append({'tab' : square(tab, dark), 'fit' : fit})
 
 # Życie
-for p in range(1):
+for p in range(ilosc_petli):
     # Mutacja
     populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, tab)
     # Ocena( 0 - 100 )
