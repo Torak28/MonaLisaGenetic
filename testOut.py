@@ -13,7 +13,7 @@ def distance2(org, N):
 im = Image.open("MonaLisa.png").convert("RGBA")
 tab = numpy.asarray(im, dtype='uint8')
 
-im2 = Image.open("E:\INZ\\121.png").convert("RGBA")
+im2 = Image.open("E:\INZ\\176.png").convert("RGBA")
 test = numpy.asarray(im2, dtype='uint8')
 
 print("Fitnes wyniku: %s" % distance2(tab, test))
