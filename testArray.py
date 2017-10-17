@@ -70,8 +70,9 @@ def mapFromTo(x,a,b,c,d):
    ret = (x - a) /(b - a) * (d - c) + c
    return ret
 
-def matingpool(pop, pop_size, maxFit):
+def matingpool(pop, pop_size):
     pop = sorted(pop, key=lambda x:(x['fit']))
+    maxFit = pop[-1]['fit']
     ret = []
     for k in range(pop_size):
         # Rzutowanie ilosci elementow z aktalnego fita na zakres 100 do 0
@@ -122,7 +123,7 @@ tab = numpy.asarray(im, dtype='uint8')
 
 # Sterowanie
 ilosc_w_populacji = 50
-ilosc_petli = 10000
+ilosc_petli = 300
 wspolczynnik_mutacji = 0.1
 
 populacja = []
@@ -130,7 +131,6 @@ populacja = []
 dark = darkPicture(tab)
 fit = distance2(tab, dark)
 maxFit2 = pow(765,2) * dark.shape[0] * dark.shape[1]
-
 
 # Tworzenie N osobnikow losowych
 for i in range(ilosc_w_populacji):
@@ -143,7 +143,7 @@ for p in range(ilosc_petli):
     # Ocena( 0 - 100 )
     populacja = score(populacja, ilosc_w_populacji)
     # Tworzenie poli rozrodczej do krzyżowania
-    pola_rozrodcza = matingpool(populacja, ilosc_w_populacji, maxFit2)
+    pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
     # Krzyzowanie i nowa populacja
     populacja = crossover(populacja, pola_rozrodcza, maxFit2)
     # Zrzucanie najlepszego w populacji
