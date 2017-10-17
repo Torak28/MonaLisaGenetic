@@ -1,5 +1,6 @@
 import numpy
 import math
+import time
 from PIL import Image
 
 def randomElem():
@@ -36,6 +37,18 @@ def distance2(org, N):
             a = int(org[i][j][0]) + int(org[i][j][1]) + int(org[i][j][2])
             b = int(N[i][j][0]) + int(N[i][j][1]) + int(N[i][j][2])
             ret += (a - b) * (a - b)
+    return ret
+
+def distance3(org, N):
+    ret = 0
+    for i in range(org.shape[0]):
+        for j in range(org.shape[1]):
+            deltaR = org[i][j][0] - N[i][j][0]
+            deltaG = org[i][j][1] - N[i][j][1]
+            deltaB = org[i][j][2] - N[i][j][2]
+
+            pFit = deltaR * deltaR + deltaG * deltaG + deltaB * deltaB
+            ret += pFit
     return ret
 
 # Mutacja
@@ -77,9 +90,9 @@ def matingpool(pop, pop_size):
     for k in range(pop_size):
         # Rzutowanie ilosci elementow z aktalnego fita na zakres 100 do 0
         # Dzięki temu mainting pool zawiera więcej dobrych osobników
-        kon = int(mapFromTo(pop[k]['fit'], 0, maxFit, 100, 0))
+        kon = int(mapFromTo(pop[k]['fit'], 0, maxFit, 100, 1))
         for l in range(kon):
-            ret.append(populacja[k])
+            ret.append(pop[k])
     return ret
 
 def mutate(pop, pop_size, pop_it, org):
@@ -93,14 +106,13 @@ def score(pop, pop_size):
         pop[i]['fit'] = distance2(tab, pop[i]['tab'])
     return pop
 
-def crossover(pop, pool, maxFit):
+def crossover(pop, pool):
     ret = []
-    child = {}
     for i in range(len(pop)):
+        child = {}
         parentA = numpy.random.choice(pool)
         parentB = numpy.random.choice(pool)
         child['tab'] = Add(parentA['tab'], parentB['tab'])
-        child['fit'] = maxFit
         ret.append(child)
     return ret
 
@@ -112,6 +124,11 @@ def dump_best(pop, it):
     newIm = Image.fromarray(best['tab'], "RGBA")
     newIm.save("E:/INZ/" + str(it) + ".png")
 
+def printPop(pop, it):
+    print("Populacja " + str(it) + " (" + str(len(pop)) + ") : ", end="")
+    for _ in range(len(pop)):
+        print(pop[_]['fit'], end=" ")
+    print("")
 
 '''
 Główna pętla programu
@@ -122,7 +139,7 @@ im = Image.open("MonaLisa.png").convert("RGBA")
 tab = numpy.asarray(im, dtype='uint8')
 
 # Sterowanie
-ilosc_w_populacji = 50
+ilosc_w_populacji = 20
 ilosc_petli = 300
 wspolczynnik_mutacji = 0.1
 
@@ -130,7 +147,7 @@ populacja = []
 
 dark = darkPicture(tab)
 fit = distance2(tab, dark)
-maxFit2 = pow(765,2) * dark.shape[0] * dark.shape[1]
+
 
 # Tworzenie N osobnikow losowych
 for i in range(ilosc_w_populacji):
@@ -142,13 +159,11 @@ for p in range(ilosc_petli):
     populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, tab)
     # Ocena( 0 - 100 )
     populacja = score(populacja, ilosc_w_populacji)
+    # Zrzucanie najlepszego w populacji
+    dump_best(populacja, p)
     # Tworzenie poli rozrodczej do krzyżowania
     pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
     # Krzyzowanie i nowa populacja
-    populacja = crossover(populacja, pola_rozrodcza, maxFit2)
-    # Zrzucanie najlepszego w populacji
-    dump_best(pola_rozrodcza, p)
+    populacja = crossover(populacja, pola_rozrodcza)
 
-
-    # Zmieniłem maiting poola z losowanie Alphy na 125.
-    # Można pokminić z lepszym rzutowaniem i samym krzyżowaniem jako takim
+    # Alpha przy mutacji na 126 jest jak co
