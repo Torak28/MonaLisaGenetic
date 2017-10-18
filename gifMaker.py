@@ -11,4 +11,4 @@ for i in range(len):
     im.append(Image.open(path + str(i) + ".png"))
 
 
-Im.save("7th_run.gif", save_all=True, append_images=[img for img in im], loop=1, duration=10)
+Im.save("8th_run.gif", save_all=True, append_images=[img for img in im], loop=1, duration=10)
