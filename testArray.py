@@ -51,6 +51,14 @@ def distance3(org, N):
             ret += pFit
     return ret
 
+def distance4(org, N):
+    ret = 0
+    for i in range(org.shape[0]):
+        for j in range(org.shape[1]):
+            if org[i][j][0] != N[i][j][0] or org[i][j][1] != N[i][j][1] or org[i][j][2] != N[i][j][2]:
+                ret +=1
+    return ret
+
 # Mutacja
 def square(org, N):
     tmp = darkPicture(N)
