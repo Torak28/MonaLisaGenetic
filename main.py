@@ -111,7 +111,7 @@ def mutate(pop, pop_size, pop_it, org):
 
 def score(pop, pop_size):
     for i in range(pop_size):
-        pop[i]['fit'] = distance4(tab, pop[i]['tab'])
+        pop[i]['fit'] = distance2(tab, pop[i]['tab'])
     return pop
 
 def crossover(pop, pool):
@@ -130,7 +130,7 @@ def dump_best(pop, it):
         if pop[i]['fit'] < best['fit']:
             best = pop[i]
     newIm = Image.fromarray(best['tab'], "RGBA")
-    newIm.save("E:/INZ2/" + str(it) + ".png")
+    newIm.save("E:/INZ/" + str(it) + ".png")
 
 def printPop(pop, it):
     print("Populacja " + str(it) + " (" + str(len(pop)) + ") : ", end="")
@@ -147,6 +147,9 @@ Główna pętla programu
 im = Image.open("MonaLisa.png").convert("RGBA")
 tab = numpy.asarray(im, dtype='uint8')
 
+rt = Image.open("E:/INZ/6557.png").convert("RGBA")
+ratunek = numpy.asarray(rt, dtype='uint8')
+
 # Sterowanie
 ilosc_w_populacji = 100
 ilosc_petli = 100000
@@ -155,15 +158,15 @@ wspolczynnik_mutacji = 0.1
 populacja = []
 
 dark = darkPicture(tab)
-fit = distance4(tab, dark)
+fit = distance2(tab, dark)
 
 
 # Tworzenie N osobnikow losowych
 for i in range(ilosc_w_populacji):
-    populacja.append({'tab' : square(tab, dark), 'fit' : fit})
+    populacja.append({'tab' : ratunek, 'fit' : distance2(tab, ratunek)})
 
 # Życie
-for p in range(ilosc_petli):
+for p in range(6557, ilosc_petli):
     # Mutacja
     populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, tab)
     # Ocena( 0 - 100 )
