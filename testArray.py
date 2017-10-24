@@ -1,91 +1,75 @@
-import numpy
-import math
-import time
-from PIL import Image
-
-def randomElem():
-    ret = numpy.empty([1], int)
-    ret = numpy.delete(ret, 0)
-    ret = numpy.append(ret, [numpy.random.randint(256, size=4)])
-    return ret
-
-def randomPictur(N):
-   ret = numpy.empty_like(N)
-   for i in range(ret.shape[0]):
-       for j in range(ret. shape[1]):
-           ret[i][j] = randomElem()
-   return ret
+import random
+from PIL import Image, ImageDraw
 
 def darkPicture(N):
-    ret = numpy.zeros_like(N)
-    return ret
-
-# distance between 2 oints in 3D space
-# |P_1\, P_2| = \sqrt{(x_2- x_1)^2 + (y_2 -y_1)^2 + (z_2- z_1)^2}
-def distance(org, N):
-    ret = 0
-    for i in range(org.shape[0]):
-        for j in range(org.shape[1]):
-            ret += int(math.sqrt(pow(int(N[i][j][0]) - int(org[i][j][0]),2) + pow(int(N[i][j][1]) - int(org[i][j][1]),2) + pow(int(N[i][j][2]) - int(org[i][j][2]),2)))
+    ret = Image.new('RGBA', N.size, (0, 0, 0, 255))
     return ret
 
 # suma różnic kwadratów
 def distance2(org, N):
     ret = 0
-    for i in range(org.shape[0]):
-        for j in range(org.shape[1]):
-            a = int(org[i][j][0]) + int(org[i][j][1]) + int(org[i][j][2])
-            b = int(N[i][j][0]) + int(N[i][j][1]) + int(N[i][j][2])
+    for i in range(org.size[0]):
+        for j in range(org.size[1]):
+            a = sum(org.getpixel((i,j)))
+            b = sum(N.getpixel((i,j)))
             ret += (a - b) * (a - b)
-    return ret
-
-def distance3(org, N):
-    ret = 0
-    for i in range(org.shape[0]):
-        for j in range(org.shape[1]):
-            deltaR = org[i][j][0] - N[i][j][0]
-            deltaG = org[i][j][1] - N[i][j][1]
-            deltaB = org[i][j][2] - N[i][j][2]
-
-            pFit = deltaR * deltaR + deltaG * deltaG + deltaB * deltaB
-            ret += pFit
-    return ret
-
-def distance4(org, N):
-    ret = 0
-    for i in range(org.shape[0]):
-        for j in range(org.shape[1]):
-            if org[i][j][0] != N[i][j][0] or org[i][j][1] != N[i][j][1] or org[i][j][2] != N[i][j][2]:
-                ret +=1
     return ret
 
 # Mutacja
 def square(org, N):
-    tmp = darkPicture(N)
-    x = numpy.random.randint(org.shape[0])
-    y = numpy.random.randint(org.shape[1])
-    w = numpy.random.random_integers(x + 1,org.shape[0])
-    h = numpy.random.random_integers(y + 1, org.shape[1])
-    R = org[x][y][0]
-    G = org[x][y][1]
-    B = org[x][y][2]
+    tmp = Image.new('RGBA', N.size)
+    ret = ImageDraw.Draw(tmp)
+    x = random.randint(0, org.size[0] - 1)
+    y = random.randint(0, org.size[1] - 1)
+    w = random.randint(x + 1, org.size[0])
+    h = random.randint(y + 1, org.size[1])
+    R = org.getpixel((x,y))[0]
+    G = org.getpixel((x,y))[1]
+    B = org.getpixel((x,y))[2]
     # eksperymentalne wydanie
-    A = numpy.random.randint(126)
-    for i in range(N.shape[0]):
-        if i >= x and i <= w:
-            for j in range(N.shape[1]):
-                if j >=y and j <= h:
-                    tmp[i][j][0] = R
-                    tmp[i][j][1] = G
-                    tmp[i][j][2] = B
-                    tmp[i][j][3] = A
-    ret = Image.alpha_composite(Image.fromarray(N,"RGBA"),Image.fromarray(tmp,"RGBA"))
-    return numpy.asarray(ret, dtype='uint8')
+    A = random.randint(0, 126)
+    ret.rectangle(((x,y),(w,h)), fill=(R,G,B,A))
+    N.paste(tmp,mask=tmp)
+    return N
+
+def polygon(org, N):
+    tmp = Image.new('RGBA', N.size)
+    ret = ImageDraw.Draw(tmp)
+    tup = ()
+    for i in range(0, 3):
+        x = random.randint(0, org.size[0] - 1)
+        y = random.randint(0, org.size[1] - 1)
+        tup += ((x,y),)
+    R = org.getpixel((x, y))[0]
+    G = org.getpixel((x, y))[1]
+    B = org.getpixel((x, y))[2]
+    # eksperymentalne wydanie
+    A = random.randint(0, 126)
+    ret.polygon( tup, fill=(R, G, B, A))
+    N.paste(tmp, mask=tmp)
+    return N
+
+def ellipse(org, N):
+    tmp = Image.new('RGBA', N.size)
+    ret = ImageDraw.Draw(tmp)
+    x = random.randint(0, org.size[0] - 1)
+    y = random.randint(0, org.size[1] - 1)
+    w = random.randint(x + 1, org.size[0])
+    h = random.randint(y + 1, org.size[1])
+    R = org.getpixel((x,y))[0]
+    G = org.getpixel((x,y))[1]
+    B = org.getpixel((x,y))[2]
+    # eksperymentalne wydanie
+    A = random.randint(0, 126)
+    ret.ellipse(((x,y),(w,h)), fill=(R,G,B,A))
+    N.paste(tmp,mask=tmp)
+    return N
+
 
 # Krzyżowanie
 def Add(P1, P2):
-    ret = Image.alpha_composite(Image.fromarray(P1, "RGBA"), Image.fromarray(P2, "RGBA"))
-    return numpy.asarray(ret, dtype='uint8')
+    ret = Image.alpha_composite(P1, P2)
+    return ret
 
 def mapFromTo(x,a,b,c,d):
    ret = (x - a) /(b - a) * (d - c) + c
@@ -105,7 +89,7 @@ def matingpool(pop, pop_size):
 
 def mutate(pop, pop_size, pop_it, org):
     for i in range(pop_size):
-        if numpy.random.random() < pop_it:
+        if random.random() < pop_it:
             pop[i]['tab'] = square(org, pop[i]['tab'])
     return pop
 
@@ -144,8 +128,7 @@ Główna pętla programu
 '''
 
 # read image as RGB and add alpha (transparency)
-im = Image.open("MonaLisa.png").convert("RGBA")
-tab = numpy.asarray(im, dtype='uint8')
+mona = Image.open("MonaLisa.png").convert("RGBA")
 
 # Sterowanie
 ilosc_w_populacji = 100
@@ -154,26 +137,11 @@ wspolczynnik_mutacji = 0.1
 
 populacja = []
 
-dark = darkPicture(tab)
-fit = distance2(tab, dark)
-
-
-# Tworzenie N osobnikow losowych
-for i in range(ilosc_w_populacji):
-    populacja.append({'tab' : square(tab, dark), 'fit' : fit})
-
-# Życie
-for p in range(ilosc_petli):
-    # Mutacja
-    populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, tab)
-    # Ocena( 0 - 100 )
-    populacja = score(populacja, ilosc_w_populacji)
-    # Zrzucanie najlepszego w populacji
-    dump_best(populacja, p)
-    printPop(populacja, p)
-    # Tworzenie poli rozrodczej do krzyżowania
-    pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
-    # Krzyzowanie i nowa populacja
-    populacja = crossover(populacja, pola_rozrodcza)
-
-    # Alpha przy mutacji na 126 jest jak co
+dark = darkPicture(mona)
+for i in range(50):
+    x1 = square(mona, dark)
+    x2 = polygon(mona, dark)
+    x3 = Add(x1, x2)
+    x4 = ellipse(mona, dark)
+    x = Add(x3, x4)
+x.show()
