@@ -65,11 +65,14 @@ def ellipse(org, N):
     N.paste(tmp,mask=tmp)
     return N
 
-
 # Krzyżowanie
 def Add(P1, P2):
     ret = Image.alpha_composite(P1, P2)
     return ret
+
+'''
+    Od tego w dół trzeba ogarnąć kod
+'''
 
 def mapFromTo(x,a,b,c,d):
    ret = (x - a) /(b - a) * (d - c) + c
