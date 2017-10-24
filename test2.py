@@ -30,15 +30,15 @@ def evole(src, dst):
         for j in range(0, src.size[1]):
             # im is more similar with src than dst iff
             # RGB sum of im is closer to that of src than that of dst
-            src_sum = sum(src.getpixel((i,j)))
-            im_diff = abs(sum(im.getpixel((i,j))) - src_sum)
-            dst_diff = abs(sum(dst.getpixel((i,j))) - src_sum)
-            if im_diff < dst_diff:
+            src_sum = sum(src.getpixel((i,j)))                  # Suma dla Mony RGB
+            im_diff = abs(sum(im.getpixel((i,j))) - src_sum)    # różnica między czystym czarnym obrazemm a Moną
+            dst_diff = abs(sum(dst.getpixel((i,j))) - src_sum)  # różnica między moim a Mona
+            if im_diff < dst_diff:                              # Jeśli moje mniejsze niż od czrnego
                 dst.putpixel((i,j), im.getpixel((i,j)))
     return dst
 
 
-src = Image.open("MonaLisa.png")
+src = Image.open("C:\\Users\\Torak28\\Desktop\\xd.png")
 dst = Image.new("RGB", src.size)
 iteration = 300
 

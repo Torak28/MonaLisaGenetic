@@ -27,7 +27,7 @@ def square(org, N):
     G = org.getpixel((x,y))[1]
     B = org.getpixel((x,y))[2]
     # eksperymentalne wydanie
-    A = random.randint(0, 126)
+    A = random.randint(0, wartosc_alphy)
     ret.rectangle(((x,y),(w,h)), fill=(R,G,B,A))
     N.paste(tmp,mask=tmp)
     return N
@@ -44,7 +44,7 @@ def polygon(org, N):
     G = org.getpixel((x, y))[1]
     B = org.getpixel((x, y))[2]
     # eksperymentalne wydanie
-    A = random.randint(0, 126)
+    A = random.randint(0, wartosc_alphy)
     ret.polygon( tup, fill=(R, G, B, A))
     N.paste(tmp, mask=tmp)
     return N
@@ -60,7 +60,7 @@ def ellipse(org, N):
     G = org.getpixel((x,y))[1]
     B = org.getpixel((x,y))[2]
     # eksperymentalne wydanie
-    A = random.randint(0, 126)
+    A = random.randint(0, wartosc_alphy)
     ret.ellipse(((x,y),(w,h)), fill=(R,G,B,A))
     N.paste(tmp,mask=tmp)
     return N
@@ -137,6 +137,7 @@ mona = Image.open("MonaLisa.png").convert("RGBA")
 ilosc_w_populacji = 100
 ilosc_petli = 100000
 wspolczynnik_mutacji = 0.1
+wartosc_alphy = 126
 
 populacja = []
 
