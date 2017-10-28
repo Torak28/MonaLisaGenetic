@@ -26,4 +26,11 @@
     populacja = crossover(populacja, pola_rozrodcza)
     print("Czas Krossa: %s" % (time.time() - start_cross))
     print("---")
+
+
+
+
+    Poszukać jakieś lepszej wersji mierzenia czy dwa obrazki są podobne
+    Może coś lepszego algorytmicznie? Obadać jakieś rozwiązania
+    Poszukać jakiś oszczędności czasowych
 ```
