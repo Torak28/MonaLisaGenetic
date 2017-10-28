@@ -1,16 +1,16 @@
 from PIL import Image
 import os
 
-path = 'E:/INZ3/'
+path = 'E:/INZ/'
 len = len(os.listdir(path))
 
 im = []
-Im = Image.open(path + "201.jpg")
+Im = Image.open(path + "5001.png")
 
-for i in range(202,len):
-    im.append(Image.open(path + str(i) + ".jpg"))
+for i in range(5001,len):
+    im.append(Image.open(path + str(i) + ".png"))
 
 
 imgList = [img for img in im]
 
-Im.save("10th_run.gif", save_all=True, append_images=imgList, loop=1, duration=10)
+Im.save("8bth_run.gif", save_all=True, append_images=imgList, loop=1, duration=10)
