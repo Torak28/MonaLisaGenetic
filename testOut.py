@@ -55,15 +55,19 @@ def checkDistancFunc(func):
 
     dark = darkPicture(tab)
 
-    x1 = func(tab, dark)
-    x2 = func(tab, test)
-    x3 = func(tab, test2)
-    x4 = (x2 * 100) / x1
-    x5 = (x3 * 100) / x1
+    x1 = func(tab, tab)
+    x2 = func(tab, dark)
+    x3 = func(tab, test)
+    x4 = func(tab, test2)
+    x5 = (x1 * 100) / x2
+    x6 = (x2 * 100) / x2
+    x7 = (x3 * 100) / x2
+    x8 = (x4 * 100) / x2
     print("Funkcja: " + str(func.__name__))
-    print("Fitnes wyniku (drk): %s (%s)" % (x1, "100%"))
-    print("Fitnes wyniku (out): %s (%s)" % (x2, str(math.floor(x4)) + "%"))
-    print("Fitnes wyniku (bst): %s (%s)" % (x3, str(math.floor(x5)) + "%"))
+    print("Fitnes wyniku (org): %s (%s)" % (x1, str(math.floor(x5)) + "%"))
+    print("Fitnes wyniku (drk): %s (%s)" % (x2, str(math.floor(x6)) + "%"))
+    print("Fitnes wyniku (out): %s (%s)" % (x3, str(math.floor(x7)) + "%"))
+    print("Fitnes wyniku (bst): %s (%s)" % (x4, str(math.floor(x8)) + "%"))
 
     print("---")
 
