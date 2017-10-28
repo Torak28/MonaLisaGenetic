@@ -1,4 +1,5 @@
 import random
+import numpy
 from PIL import Image, ImageDraw
 
 def darkPicture(N):
@@ -70,13 +71,30 @@ def Add(P1, P2):
     ret = Image.alpha_composite(P1, P2)
     return ret
 
-'''
-    Od tego w dół trzeba ogarnąć kod
-'''
-
 def mapFromTo(x,a,b,c,d):
    ret = (x - a) /(b - a) * (d - c) + c
    return ret
+
+
+'''
+'''
+
+def mutate(pop, pop_size, pop_it, org):
+    for i in range(pop_size):
+        if random.random() < pop_it:
+            figure = random.random()
+            if figure < 0.3:
+                pop[i]['pic'] = square(org, pop[i]['pic'])
+            elif figure > 0.3 and figure < 0.6:
+                pop[i]['pic'] = polygon(org, pop[i]['pic'])
+            else:
+                pop[i]['pic'] = ellipse(org, pop[i]['pic'])
+    return pop
+
+def score(pop, pop_size):
+    for i in range(pop_size):
+        pop[i]['fit'] = distance2(mona, pop[i]['pic'])
+    return pop
 
 def matingpool(pop, pop_size):
     pop = sorted(pop, key=lambda x:(x['fit']))
@@ -90,24 +108,13 @@ def matingpool(pop, pop_size):
             ret.append(pop[k])
     return ret
 
-def mutate(pop, pop_size, pop_it, org):
-    for i in range(pop_size):
-        if random.random() < pop_it:
-            pop[i]['tab'] = square(org, pop[i]['tab'])
-    return pop
-
-def score(pop, pop_size):
-    for i in range(pop_size):
-        pop[i]['fit'] = distance2(tab, pop[i]['tab'])
-    return pop
-
 def crossover(pop, pool):
     ret = []
     for i in range(len(pop)):
         child = {}
         parentA = numpy.random.choice(pool)
         parentB = numpy.random.choice(pool)
-        child['tab'] = Add(parentA['tab'], parentB['tab'])
+        child['pic'] = Add(parentA['pic'], parentB['pic'])
         ret.append(child)
     return ret
 
@@ -116,8 +123,7 @@ def dump_best(pop, it):
     for i in range(len(pop)):
         if pop[i]['fit'] < best['fit']:
             best = pop[i]
-    newIm = Image.fromarray(best['tab'], "RGBA")
-    newIm.save("E:/INZ/" + str(it) + ".png")
+    best['pic'].save("E:/INZ4/" + str(it) + ".png")
 
 def printPop(pop, it):
     print("Populacja " + str(it) + " (" + str(len(pop)) + ") : ", end="")
@@ -134,18 +140,33 @@ Główna pętla programu
 mona = Image.open("MonaLisa.png").convert("RGBA")
 
 # Sterowanie
-ilosc_w_populacji = 100
+ilosc_w_populacji = 2
 ilosc_petli = 100000
-wspolczynnik_mutacji = 0.1
+wspolczynnik_mutacji = 0.2
 wartosc_alphy = 126
 
 populacja = []
 
 dark = darkPicture(mona)
-for i in range(50):
-    x1 = square(mona, dark)
-    x2 = polygon(mona, dark)
-    x3 = Add(x1, x2)
-    x4 = ellipse(mona, dark)
-    x = Add(x3, x4)
-x.show()
+fit = distance2(mona, dark)
+
+
+# Tworzenie N osobnikow losowych
+for i in range(ilosc_w_populacji):
+    populacja.append({'pic' : dark, 'fit' : fit})
+
+# Życie
+for p in range(100):
+    # Mutacja
+    populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, mona)
+    # Ocena( 0 - 100 )
+    populacja = score(populacja, ilosc_w_populacji)
+    # Zrzucanie najlepszego w populacji
+    dump_best(populacja, p)
+    printPop(populacja, p)
+    # Tworzenie poli rozrodczej do krzyżowania
+    pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
+    # Krzyzowanie i nowa populacja
+    populacja = crossover(populacja, pola_rozrodcza)
+
+    # Alpha przy mutacji na 126 jest jak co
