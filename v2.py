@@ -75,10 +75,6 @@ def mapFromTo(x,a,b,c,d):
    ret = (x - a) /(b - a) * (d - c) + c
    return ret
 
-
-'''
-'''
-
 def mutate(pop, pop_size, pop_it, org):
     for i in range(pop_size):
         if random.random() < pop_it:
@@ -140,10 +136,10 @@ Główna pętla programu
 mona = Image.open("MonaLisa.png").convert("RGBA")
 
 # Sterowanie
-ilosc_w_populacji = 2
-ilosc_petli = 100000
-wspolczynnik_mutacji = 0.2
-wartosc_alphy = 126
+ilosc_w_populacji = 20
+ilosc_petli = 300
+wspolczynnik_mutacji = 0.3
+wartosc_alphy = 255
 
 populacja = []
 
@@ -168,5 +164,3 @@ for p in range(100):
     pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
     # Krzyzowanie i nowa populacja
     populacja = crossover(populacja, pola_rozrodcza)
-
-    # Alpha przy mutacji na 126 jest jak co
