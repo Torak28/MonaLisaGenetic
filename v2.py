@@ -136,10 +136,10 @@ Główna pętla programu
 mona = Image.open("MonaLisa.png").convert("RGBA")
 
 # Sterowanie
-ilosc_w_populacji = 20
-ilosc_petli = 300
-wspolczynnik_mutacji = 0.3
-wartosc_alphy = 255
+ilosc_w_populacji = 100
+ilosc_petli = 10000
+wspolczynnik_mutacji = 0.1
+wartosc_alphy = 126
 
 populacja = []
 
