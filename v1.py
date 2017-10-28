@@ -147,12 +147,9 @@ Główna pętla programu
 im = Image.open("MonaLisa.png").convert("RGBA")
 tab = numpy.asarray(im, dtype='uint8')
 
-rt = Image.open("E:/INZ/6557.png").convert("RGBA")
-ratunek = numpy.asarray(rt, dtype='uint8')
-
 # Sterowanie
 ilosc_w_populacji = 100
-ilosc_petli = 100000
+ilosc_petli = 10000
 wspolczynnik_mutacji = 0.1
 
 populacja = []
@@ -163,10 +160,10 @@ fit = distance2(tab, dark)
 
 # Tworzenie N osobnikow losowych
 for i in range(ilosc_w_populacji):
-    populacja.append({'tab' : ratunek, 'fit' : distance2(tab, ratunek)})
+    populacja.append({'tab' : dark, 'fit' : fit})
 
 # Życie
-for p in range(6557, ilosc_petli):
+for p in range(ilosc_petli):
     # Mutacja
     populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, tab)
     # Ocena( 0 - 100 )
