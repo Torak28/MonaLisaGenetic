@@ -152,7 +152,7 @@ for i in range(ilosc_w_populacji):
     populacja.append({'pic' : dark, 'fit' : fit})
 
 # Życie
-for p in range(100):
+for p in range(ilosc_petli):
     # Mutacja
     populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, mona)
     # Ocena( 0 - 100 )
