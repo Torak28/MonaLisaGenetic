@@ -43,37 +43,32 @@ def distance4(org, N):
                 ret +=1
     return ret
 
-im = Image.open("MonaLisa.png").convert("RGBA")
-tab = numpy.asarray(im, dtype='uint8')
+def checkDistancFunc(func):
+    im = Image.open("MonaLisa.png").convert("RGBA")
+    tab = numpy.asarray(im, dtype='uint8')
 
-im2 = Image.open("out.png").convert("RGBA")
-test = numpy.asarray(im2, dtype='uint8')
+    im2 = Image.open("out.png").convert("RGBA")
+    test = numpy.asarray(im2, dtype='uint8')
 
-im3 = Image.open("E:\INZ\\9999.png").convert("RGBA")
-test2 = numpy.asarray(im3, dtype='uint8')
+    im3 = Image.open("E:\INZ\\9999.png").convert("RGBA")
+    test2 = numpy.asarray(im3, dtype='uint8')
 
-dark = darkPicture(tab)
+    dark = darkPicture(tab)
 
-print("Fitnes wyniku 1(drk): %s" % distance(tab, dark))
-print("Fitnes wyniku 1(out): %s" % distance(tab, test))
-print("Fitnes wyniku 1(bst): %s" % distance(tab, test2))
+    x1 = func(tab, dark)
+    x2 = func(tab, test)
+    x3 = func(tab, test2)
+    x4 = (x2 * 100) / x1
+    x5 = (x3 * 100) / x1
+    print("Funkcja: " + str(func.__name__))
+    print("Fitnes wyniku (drk): %s (%s)" % (x1, "100%"))
+    print("Fitnes wyniku (out): %s (%s)" % (x2, str(math.floor(x4)) + "%"))
+    print("Fitnes wyniku (bst): %s (%s)" % (x3, str(math.floor(x5)) + "%"))
 
-print("---")
-
-print("Fitnes wyniku 2(drk): %s" % distance2(tab, dark))
-print("Fitnes wyniku 2(out): %s" % distance2(tab, test))
-print("Fitnes wyniku 2(bst): %s" % distance2(tab, test2))
-
-print("---")
-
-print("Fitnes wyniku 3(drk): %s" % distance3(tab, dark))
-print("Fitnes wyniku 3(out): %s" % distance3(tab, test))
-print("Fitnes wyniku 3(bst): %s" % distance3(tab, test2))
-
-print("---")
-
-print("Fitnes wyniku 4(drk): %s" % distance4(tab, dark))
-print("Fitnes wyniku 4(out): %s" % distance4(tab, test))
-print("Fitnes wyniku 4(bst): %s" % distance4(tab, test2))
+    print("---")
 
 
+checkDistancFunc(distance)
+checkDistancFunc(distance2)
+checkDistancFunc(distance3)
+checkDistancFunc(distance4)
