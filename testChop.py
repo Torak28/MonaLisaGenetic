@@ -30,7 +30,7 @@ def rmsdiff_1997(im1, im2):
 
 img1 = Image.open("MonaLisa.png").convert("RGBA")
 img2 = Image.open("E:\INZ\\9999.png").convert("RGBA")
-img3 = darkPicture(img1)
+img3 = Image.fromarray(darkPicture(img1), "RGBA")
 
 dif = rmsdiff_1997(img1, img3)
 
