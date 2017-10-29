@@ -6,7 +6,7 @@
 
  * v1 - pierwsza wersja z kwadratami
  * v2 - druga wersja z kołem, trójkątem i kwadratem
- * v3 - trzecia wersja ze średnim kolorem
+ * v3 - trzecia wersja ze średnim kolorem i super szybkim liczeniem różnic
 
 ### Czas
 
