@@ -2,6 +2,12 @@
 
 ### Czas: do końca października
 
+### Wersje:
+
+ * v1 - pierwsza wersja z kwadratami
+ * v2 - druga wersja z kołem, trójkątem i kwadratem
+ * v3 - trzecia wersja ze średnim kolorem
+
 ### Czas
 
 ```python
