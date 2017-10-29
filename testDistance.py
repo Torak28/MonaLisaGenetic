@@ -1,6 +1,7 @@
 from PIL import Image, ImageChops
 import numpy
 import math, operator
+import time
 
 def darkPicture(N):
     ret = numpy.zeros_like(N)
@@ -50,6 +51,7 @@ def distance5(org, N):
     return (numpy.sum(numpy.asarray(diff1, dtype='uint8')))
 
 def reduce(function, iterable, initializer=None):
+    "Funkcja z Pythona 2.7"
     it = iter(iterable)
     if initializer is None:
         try:
@@ -89,10 +91,18 @@ def checkDistancFunc(func):
 
     dark = darkPicture(tab)
 
+    s_x1 = time.time()
     x1 = func(tab, tab)
+    k_x1 = time.time() - s_x1
+    s_x2 = time.time()
     x2 = func(tab, dark)
+    k_x2 = time.time() - s_x2
+    s_x3 = time.time()
     x3 = func(tab, test)
+    k_x3 = time.time() - s_x3
+    s_x4 = time.time()
     x4 = func(tab, test2)
+    k_x4 = time.time() - s_x4
     x5 = (x1 * 100) / x2
     x6 = (x2 * 100) / x2
     x7 = (x3 * 100) / x2
@@ -102,6 +112,7 @@ def checkDistancFunc(func):
     print("Fitnes wyniku (drk): %s (%s)" % (x2, str(math.floor(x6)) + "%"))
     print("Fitnes wyniku (out): %s (%s)" % (x3, str(math.floor(x7)) + "%"))
     print("Fitnes wyniku (bst): %s (%s)" % (x4, str(math.floor(x8)) + "%"))
+    print("Średni czas wyniku: %s" % ((k_x1 + k_x2 + k_x3 + k_x4)/4))
 
     print("---")
 
