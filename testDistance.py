@@ -1,6 +1,6 @@
 from PIL import Image, ImageChops
 import numpy
-import math
+import math, operator
 
 def darkPicture(N):
     ret = numpy.zeros_like(N)
@@ -49,6 +49,34 @@ def distance5(org, N):
     diff1 = ImageChops.subtract(org, N)
     return (numpy.sum(numpy.asarray(diff1, dtype='uint8')))
 
+def reduce(function, iterable, initializer=None):
+    it = iter(iterable)
+    if initializer is None:
+        try:
+            initializer = next(it)
+        except StopIteration:
+            raise TypeError('reduce() of empty sequence with no initial value')
+    accum_value = initializer
+    for x in it:
+        accum_value = function(accum_value, x)
+    return accum_value
+
+def distance6(org, N):
+    "Calculate the root-mean-square difference between two images"\
+    "http://effbot.org/zone/pil-comparing-images.htm"
+
+    org = Image.fromarray(org, "RGBA")
+    N = Image.fromarray(N, "RGBA")
+
+    h = ImageChops.difference(org, N).histogram()
+
+    # calculate rms
+    ret =  math.sqrt(reduce(operator.add,
+        map(lambda h, i: h*(i**2), h, range(256))
+    ) / (float(org.size[0]) * org.size[1]))
+
+    return int(ret)
+
 def checkDistancFunc(func):
     im = Image.open("MonaLisa.png").convert("RGBA")
     tab = numpy.asarray(im, dtype='uint8')
@@ -83,3 +111,4 @@ checkDistancFunc(distance2)
 checkDistancFunc(distance3)
 checkDistancFunc(distance4)
 checkDistancFunc(distance5)
+checkDistancFunc(distance6)
