@@ -1,7 +1,7 @@
 import random
 import numpy
 import operator, math
-from PIL import Image, ImageDraw, ImageChops
+from PIL import Image, ImageDraw, ImageChops, ImageStat
 
 def darkPicture(N):
     ret = Image.new('RGBA', N.size, (0, 0, 0, 255))
@@ -33,6 +33,30 @@ def distance2(org, N):
 
     return ret
 
+def find_median_colorS(N, x, y, w, h):
+    tmp = Image.new('L', N.size)
+    ret = ImageDraw.Draw(tmp)
+
+    ret.rectangle(((x, y), (w, h)), outline= 1, fill=1)
+    median = ImageStat.Stat(N, mask=tmp).median
+    return median
+
+def find_median_colorP(N, tup):
+    tmp = Image.new('L', N.size)
+    ret = ImageDraw.Draw(tmp)
+
+    ret.polygon(tup, outline= 1, fill=1)
+    median = ImageStat.Stat(N, mask=tmp).median
+    return median
+
+def find_median_colorE(N, x, y, w, h):
+    tmp = Image.new('L', N.size)
+    ret = ImageDraw.Draw(tmp)
+
+    ret.ellipse(((x, y), (w, h)), outline= 1, fill=1)
+    median = ImageStat.Stat(N, mask=tmp).median
+    return median
+
 # Mutacja
 def square(org, N):
     tmp = Image.new('RGBA', N.size)
@@ -41,9 +65,10 @@ def square(org, N):
     y = random.randint(0, org.size[1] - 1)
     w = random.randint(x + 1, org.size[0])
     h = random.randint(y + 1, org.size[1])
-    R = org.getpixel((x,y))[0]
-    G = org.getpixel((x,y))[1]
-    B = org.getpixel((x,y))[2]
+    col = find_median_colorS(org, x, y, w, h)
+    R = col[0]
+    G = col[1]
+    B = col[2]
     # eksperymentalne wydanie
     A = random.randint(0, wartosc_alphy)
     ret.rectangle(((x,y),(w,h)), fill=(R,G,B,A))
@@ -58,12 +83,13 @@ def polygon(org, N):
         x = random.randint(0, org.size[0] - 1)
         y = random.randint(0, org.size[1] - 1)
         tup += ((x,y),)
-    R = org.getpixel((x, y))[0]
-    G = org.getpixel((x, y))[1]
-    B = org.getpixel((x, y))[2]
+    col = find_median_colorP(org, tup)
+    R = col[0]
+    G = col[1]
+    B = col[2]
     # eksperymentalne wydanie
     A = random.randint(0, wartosc_alphy)
-    ret.polygon( tup, fill=(R, G, B, A))
+    ret.polygon(tup, fill=(R, G, B, A))
     N.paste(tmp, mask=tmp)
     return N
 
@@ -74,9 +100,10 @@ def ellipse(org, N):
     y = random.randint(0, org.size[1] - 1)
     w = random.randint(x + 1, org.size[0])
     h = random.randint(y + 1, org.size[1])
-    R = org.getpixel((x,y))[0]
-    G = org.getpixel((x,y))[1]
-    B = org.getpixel((x,y))[2]
+    col = find_median_colorE(org, x, y, w, h)
+    R = col[0]
+    G = col[1]
+    B = col[2]
     # eksperymentalne wydanie
     A = random.randint(0, wartosc_alphy)
     ret.ellipse(((x,y),(w,h)), fill=(R,G,B,A))
@@ -153,9 +180,9 @@ Główna pętla programu
 mona = Image.open("MonaLisa.png").convert("RGBA")
 
 # Sterowanie
-ilosc_w_populacji = 100
-ilosc_petli = 10000
-wspolczynnik_mutacji = 0.1
+ilosc_w_populacji = 200
+ilosc_petli = 30000
+wspolczynnik_mutacji = 0.2
 wartosc_alphy = 126
 
 populacja = []
