@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageChops
 import numpy
 import math
 
@@ -43,6 +43,12 @@ def distance4(org, N):
                 ret +=1
     return ret
 
+def distance5(org, N):
+    org = Image.fromarray(org, "RGBA")
+    N = Image.fromarray(N, "RGBA")
+    diff1 = ImageChops.subtract(org, N)
+    return (numpy.sum(numpy.asarray(diff1, dtype='uint8')))
+
 def checkDistancFunc(func):
     im = Image.open("MonaLisa.png").convert("RGBA")
     tab = numpy.asarray(im, dtype='uint8')
@@ -76,3 +82,4 @@ checkDistancFunc(distance)
 checkDistancFunc(distance2)
 checkDistancFunc(distance3)
 checkDistancFunc(distance4)
+checkDistancFunc(distance5)
