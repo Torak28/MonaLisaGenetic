@@ -1,6 +1,4 @@
-import random
-import numpy
-import operator, math
+import random, operator, math, numpy, os
 from PIL import Image, ImageDraw, ImageChops, ImageStat
 
 def darkPicture(N):
@@ -166,11 +164,13 @@ def dump_best(pop, it):
     best['pic'].save("E:/INZ5v3/" + str(it) + ".png")
 
 def printPop(pop, it):
-    print("Populacja " + str(it) + " (" + str(len(pop)) + ") : ", end="")
+    ret = ""
+    ret += "Populacja " + str(it) + " (" + str(len(pop)) + ") : "
     pop = sorted(pop, key=lambda x: (x['fit']))
     for _ in range(len(pop)):
-        print(pop[_]['fit'], end=" ")
-    print("")
+       ret += " " + str(pop[_]['fit'])
+    print(ret, file=open(out, "a"))
+    print(ret)
 
 '''
 Główna pętla programu
@@ -181,7 +181,7 @@ mona = Image.open("MonaLisa.png").convert("RGBA")
 
 # Sterowanie
 ilosc_w_populacji = 100
-ilosc_petli = 10000
+ilosc_petli = 100000
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
 
@@ -189,7 +189,10 @@ populacja = []
 
 dark = darkPicture(mona)
 fit = distance2(mona, dark)
+out = "E:/INZ5v3/out.txt"
 
+if (os.path.isfile(out)):
+    open(out, 'w').close()
 
 # Tworzenie N osobnikow losowych
 for i in range(ilosc_w_populacji):
