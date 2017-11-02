@@ -193,7 +193,7 @@ def dump_best(pop, it, strx):
     for i in range(len(pop)):
         if pop[i]['fit'] < best['fit']:
             best = pop[i]
-    best['pic'].save("F:/" + folder + "/" + str(strx) + "-" + str(it) + ".png")
+    best['pic'].save("F:/" + folder + "/" + str(strx) + "/" + str(strx) + "-" + str(it) + ".png")
 
 def printPop(pop, it, strx):
     ret = ""
@@ -245,7 +245,7 @@ ideal = Image.open("MonaLisa.png").convert("RGBA")
 
 # Sterowanie
 ilosc_w_populacji = 100
-ilosc_petli = 2000
+ilosc_petli = 10000
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
 folder = "INZ6v4"
