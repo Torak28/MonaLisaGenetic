@@ -2,11 +2,18 @@
 
 ### Czas: do końca października
 
+### ToDo:
+
+ * Dodać skrypt łączacy wszystkie cztery przejscia
+ * Może 16 małych części?
+ * Jakoś ogarnąć sytuację z "oknem"
+
 ### Wersje:
 
- * v1 - pierwsza wersja z kwadratami
- * v2 - druga wersja z kołem, trójkątem i kwadratem
- * v3 - trzecia wersja ze średnim kolorem i super szybkim liczeniem różnic
+ * **v1** - pierwsza wersja z kwadratami
+ * **v2** - druga wersja z kołem, trójkątem i kwadratem
+ * **v3** - trzecia wersja ze średnim kolorem i super szybkim liczeniem różnic
+ * **v4** - czwarta wersja z podziełem na 4 części
 
 ### Czas
 
@@ -32,11 +39,4 @@
     populacja = crossover(populacja, pola_rozrodcza)
     print("Czas Krossa: %s" % (time.time() - start_cross))
     print("---")
-
-
-
-
-    Poszukać jakieś lepszej wersji mierzenia czy dwa obrazki są podobne
-    Może coś lepszego algorytmicznie? Obadać jakieś rozwiązania
-    Poszukać jakiś oszczędności czasowych
 ```

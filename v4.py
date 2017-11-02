@@ -257,15 +257,15 @@ run(m2, "m2")
 run(m3, "m3")
 run(m4, "m4")
 
-a1 = Image.open("F:/" + folder + "/m1-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
-a2 = Image.open("F:/" + folder + "/m2-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
-a3 = Image.open("F:/" + folder + "/m3-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
-a4 = Image.open("F:/" + folder + "/m4-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
+a1 = Image.open("F:/" + folder + "/m1/m1-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
+a2 = Image.open("F:/" + folder + "/m2/m2-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
+a3 = Image.open("F:/" + folder + "/m3/m3-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
+a4 = Image.open("F:/" + folder + "/m4/m4-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
 
 ass = assemble4(ideal, [a1, a2, a3, a4])
 ass.save("F:/" + folder + "/output.png")
 
-bss = Image.open("F:/INZ5v3/" + str(ilosc_petli - 1 ) + ".png").convert("RGBA")
+bss = Image.open("F:/INZ5v32/99999.png").convert("RGBA")
 
 print("Nowa wersja algorytmu: %s" % distance2(ideal, ass))
 print("Stara wersja algorytmu: %s" % distance2(ideal, bss))
