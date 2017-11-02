@@ -1,6 +1,38 @@
 import random, operator, math, numpy, os
 from PIL import Image, ImageDraw, ImageChops, ImageStat
 
+def crop4(org):
+    ret = []
+    width, height = org.size
+
+    leftT = 0, 0, width//2, height//2
+    rightT = width//2, 0, width, height//2
+    leftB = 0, height//2, width//2, height
+    rightB = width//2, height//2, width, height
+
+    ret.append(org.crop(leftT))
+    ret.append(org.crop(rightT))
+    ret.append(org.crop(leftB))
+    ret.append(org.crop(rightB))
+
+    return ret
+
+def assemble4(org, tab):
+    ret = Image.new('RGBA', org.size, (0, 0, 0, 255))
+    width, height = org.size
+
+    leftT = 0, 0, width // 2, height // 2
+    rightT = width // 2, 0, width, height // 2
+    leftB = 0, height // 2, width // 2, height
+    rightB = width // 2, height // 2, width, height
+
+    ret.paste(tab[0], leftT)
+    ret.paste(tab[1], rightT)
+    ret.paste(tab[2], leftB)
+    ret.paste(tab[3], rightB)
+
+    return ret
+
 def darkPicture(N):
     ret = Image.new('RGBA', N.size, (0, 0, 0, 255))
     return ret
@@ -156,61 +188,85 @@ def crossover(pop, pool):
         ret.append(child)
     return ret
 
-def dump_best(pop, it):
+def dump_best(pop, it, strx):
     best = pop[0]
     for i in range(len(pop)):
         if pop[i]['fit'] < best['fit']:
             best = pop[i]
-    best['pic'].save("E:/INZ5v3/" + str(it) + ".png")
+    best['pic'].save("F:/" + folder + "/" + str(strx) + "-" + str(it) + ".png")
 
-def printPop(pop, it):
+def printPop(pop, it, strx):
     ret = ""
-    ret += "Populacja " + str(it) + " (" + str(len(pop)) + ") : "
+    ret += "Populacja " + str(strx) + " - " + str(it) + " (" + str(len(pop)) + ") : "
     pop = sorted(pop, key=lambda x: (x['fit']))
     for _ in range(len(pop)):
        ret += " " + str(pop[_]['fit'])
     print(ret, file=open(out, "a"))
     print(ret)
 
-def crop():
-    print("xd")
+def run(mona, strx):
+    populacja = []
+    dark = darkPicture(mona)
+    fit = distance2(mona, dark)
+
+    if (os.path.isfile(out)):
+        open(out, 'w').close()
+
+    # Tworzenie N osobnikow losowych
+    for i in range(ilosc_w_populacji):
+        populacja.append({'pic': dark, 'fit': fit})
+
+    # Życie
+    for p in range(ilosc_petli):
+        # Mutacja
+        populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, mona)
+        # Ocena( 0 - 100 )
+        populacja = score(populacja, ilosc_w_populacji)
+        # Zrzucanie najlepszego w populacji
+        dump_best(populacja, p, strx)
+        printPop(populacja, p, strx)
+        # Tworzenie poli rozrodczej do krzyżowania
+        pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
+        # Krzyzowanie i nowa populacja
+        populacja = crossover(populacja, pola_rozrodcza)
 
 '''
 Główna pętla programu
 '''
 
 # read image as RGB and add alpha (transparency)
-mona = Image.open("MonaLisa.png").convert("RGBA")
+m1 = Image.open("m1.png").convert("RGBA")
+m2 = Image.open("m2.png").convert("RGBA")
+m3 = Image.open("m3.png").convert("RGBA")
+m4 = Image.open("m4.png").convert("RGBA")
+
+ideal = Image.open("MonaLisa.png").convert("RGBA")
+
 
 # Sterowanie
 ilosc_w_populacji = 100
-ilosc_petli = 100000
+ilosc_petli = 2000
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
+folder = "INZ6v4"
 
-populacja = []
+out = "F:/" + folder + "/out.txt"
 
-dark = darkPicture(mona)
-fit = distance2(mona, dark)
-out = "E:/INZ5v3/out.txt"
+run(m1, "m1")
+run(m2, "m2")
+run(m3, "m3")
+run(m4, "m4")
 
-if (os.path.isfile(out)):
-    open(out, 'w').close()
+a1 = Image.open("F:/INZ6v4/m1-" + str(ilosc_petli - 1 ) + ".png").convert("RGBA")
+a2 = Image.open("F:/INZ6v4/m2-" + str(ilosc_petli - 1 ) + "1999.png").convert("RGBA")
+a3 = Image.open("F:/INZ6v4/m3-" + str(ilosc_petli - 1 ) + "1999.png").convert("RGBA")
+a4 = Image.open("F:/INZ6v4/m4-" + str(ilosc_petli - 1 ) + "1999.png").convert("RGBA")
 
-# Tworzenie N osobnikow losowych
-for i in range(ilosc_w_populacji):
-    populacja.append({'pic' : dark, 'fit' : fit})
+ass = assemble4(ideal, [a1,a2,a3,a4])
+ass.save("F:/INZ6v4/output.png")
+ass.show()
 
-# Życie
-for p in range(ilosc_petli):
-    # Mutacja
-    populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, mona)
-    # Ocena( 0 - 100 )
-    populacja = score(populacja, ilosc_w_populacji)
-    # Zrzucanie najlepszego w populacji
-    dump_best(populacja, p)
-    printPop(populacja, p)
-    # Tworzenie poli rozrodczej do krzyżowania
-    pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
-    # Krzyzowanie i nowa populacja
-    populacja = crossover(populacja, pola_rozrodcza)
+bss = Image.open("F:/INZ5v3/" + str(ilosc_petli - 1 ) + ".png").convert("RGBA")
+
+print(distance2(ideal, ass))
+print(distance2(ideal, bss))
