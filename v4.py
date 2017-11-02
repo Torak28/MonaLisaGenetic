@@ -161,7 +161,7 @@ def mutate(pop, pop_size, pop_it, org):
                 pop[i]['pic'] = ellipse(org, pop[i]['pic'])
     return pop
 
-def score(pop, pop_size):
+def score(pop, pop_size, mona):
     for i in range(pop_size):
         pop[i]['fit'] = distance2(mona, pop[i]['pic'])
     return pop
@@ -221,7 +221,7 @@ def run(mona, strx):
         # Mutacja
         populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, mona)
         # Ocena( 0 - 100 )
-        populacja = score(populacja, ilosc_w_populacji)
+        populacja = score(populacja, ilosc_w_populacji, mona)
         # Zrzucanie najlepszego w populacji
         dump_best(populacja, p, strx)
         printPop(populacja, p, strx)
@@ -257,16 +257,15 @@ run(m2, "m2")
 run(m3, "m3")
 run(m4, "m4")
 
-a1 = Image.open("F:/INZ6v4/m1-" + str(ilosc_petli - 1 ) + ".png").convert("RGBA")
-a2 = Image.open("F:/INZ6v4/m2-" + str(ilosc_petli - 1 ) + "1999.png").convert("RGBA")
-a3 = Image.open("F:/INZ6v4/m3-" + str(ilosc_petli - 1 ) + "1999.png").convert("RGBA")
-a4 = Image.open("F:/INZ6v4/m4-" + str(ilosc_petli - 1 ) + "1999.png").convert("RGBA")
+a1 = Image.open("F:/" + folder + "/m1-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
+a2 = Image.open("F:/" + folder + "/m2-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
+a3 = Image.open("F:/" + folder + "/m3-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
+a4 = Image.open("F:/" + folder + "/m4-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
 
-ass = assemble4(ideal, [a1,a2,a3,a4])
-ass.save("F:/INZ6v4/output.png")
-ass.show()
+ass = assemble4(ideal, [a1, a2, a3, a4])
+ass.save("F:/" + folder + "/output.png")
 
 bss = Image.open("F:/INZ5v3/" + str(ilosc_petli - 1 ) + ".png").convert("RGBA")
 
-print(distance2(ideal, ass))
-print(distance2(ideal, bss))
+print("Nowa wersja algorytmu: %s" % distance2(ideal, ass))
+print("Stara wersja algorytmu: %s" % distance2(ideal, bss))
