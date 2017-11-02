@@ -161,7 +161,7 @@ def dump_best(pop, it):
     for i in range(len(pop)):
         if pop[i]['fit'] < best['fit']:
             best = pop[i]
-    best['pic'].save("E:/INZ5v3/" + str(it) + ".png")
+    best['pic'].save("E:/INZ5v32/" + str(it) + ".png")
 
 def printPop(pop, it):
     ret = ""
@@ -171,9 +171,6 @@ def printPop(pop, it):
        ret += " " + str(pop[_]['fit'])
     print(ret, file=open(out, "a"))
     print(ret)
-
-def crop():
-    print("xd")
 
 '''
 Główna pętla programu
@@ -192,17 +189,18 @@ populacja = []
 
 dark = darkPicture(mona)
 fit = distance2(mona, dark)
-out = "E:/INZ5v3/out.txt"
+out = "E:/INZ5v32/out.txt"
+ratunek = Image.open("E:/INZ5v3/65531.png").convert("RGBA")
 
 if (os.path.isfile(out)):
     open(out, 'w').close()
 
 # Tworzenie N osobnikow losowych
 for i in range(ilosc_w_populacji):
-    populacja.append({'pic' : dark, 'fit' : fit})
+    populacja.append({'pic' : ratunek, 'fit' : distance2(mona, ratunek)})
 
 # Życie
-for p in range(ilosc_petli):
+for p in range(65531, ilosc_petli):
     # Mutacja
     populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, mona)
     # Ocena( 0 - 100 )
