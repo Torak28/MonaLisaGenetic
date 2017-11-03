@@ -18,6 +18,9 @@ def combine(g1, g2, strx):
 
     Im.save("gif/tmp/" + str(strx) + ".gif", save_all=True, append_images=imgList, loop=1, duration=1)
 
+    Im2.close()
+    Im3.close()
+
     os.remove('gif/tmp/' + str(g1) + '.gif')
     os.remove('gif/tmp/' + str(g2) + '.gif')
 
