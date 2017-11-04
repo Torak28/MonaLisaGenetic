@@ -4,6 +4,7 @@
 # JustCheckStack.py: 1
 # combineGif.py: 1
 # gifMaker.py: 1
+# gifMaker4.py: 1,4
 # ratunek.py: 2
 # testChop.py: 1
 # testDistance.py: 1
