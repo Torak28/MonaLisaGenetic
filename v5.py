@@ -41,10 +41,7 @@ def crop4(org):
     return ret
 
 def assemble4(org, tab):
-    ret1 = Image.new('RGBA', org.size, (0, 0, 0, 0))
-    ret2 = Image.new('RGBA', org.size, (0, 0, 0, 0))
-    ret3 = Image.new('RGBA', org.size, (0, 0, 0, 0))
-    ret4 = Image.new('RGBA', org.size, (0, 0, 0, 0))
+    ret = Image.new('RGBA', org.size)
 
     width, height = org.size
 
@@ -53,13 +50,10 @@ def assemble4(org, tab):
     leftB = 0, height // 2 - 10, width // 2, height
     rightB = width // 2 - 10, height // 2, width, height
 
-    ret1.paste(tab[0], leftT)
-    ret2.paste(tab[1], rightT)
-    ret = Image.alpha_composite(ret2, ret1)
-    ret3.paste(tab[2], leftB)
-    ret = Image.alpha_composite(ret, ret3)
-    ret4.paste(tab[3], rightB)
-    ret = Image.alpha_composite(ret, ret4)
+    ret.paste(tab[0], leftT, mask=tab[0])
+    ret.paste(tab[1], rightT, mask=tab[1])
+    ret.paste(tab[2], leftB, mask=tab[2])
+    ret.paste(tab[3], rightB, mask=tab[3])
 
     return ret
 
@@ -296,8 +290,8 @@ m16 = m[15]
 
 
 # Sterowanie
-ilosc_w_populacji = 20
-ilosc_petli = 300
+ilosc_w_populacji = 100
+ilosc_petli = 10000
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
 folder = "INZ8v5"
