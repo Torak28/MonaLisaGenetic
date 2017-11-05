@@ -4,9 +4,7 @@
 
 ### ToDo:
 
- * Zmienić funkcje printujaco do pliku
  * Może 16 małych części?
- * Jakoś ogarnąć sytuację z "oknem"
 
 ### Wersje:
 
