@@ -18,7 +18,11 @@ def crop4(org):
     return ret
 
 def assemble4(org, tab):
-    ret = Image.new('RGBA', org.size, (0, 0, 0, 255))
+    ret1 = Image.new('RGBA', org.size, (0, 0, 0, 0))
+    ret2 = Image.new('RGBA', org.size, (0, 0, 0, 0))
+    ret3 = Image.new('RGBA', org.size, (0, 0, 0, 0))
+    ret4 = Image.new('RGBA', org.size, (0, 0, 0, 0))
+
     width, height = org.size
 
     leftT = 0, 0, width // 2 + 10, height // 2
@@ -26,10 +30,13 @@ def assemble4(org, tab):
     leftB = 0, height // 2 - 10, width // 2, height
     rightB = width // 2 - 10, height // 2, width, height
 
-    ret.paste(tab[0], leftT)
-    ret.paste(tab[1], rightT)
-    ret.paste(tab[2], leftB)
-    ret.paste(tab[3], rightB)
+    ret1.paste(tab[0], leftT)
+    ret2.paste(tab[1], rightT)
+    ret = Image.alpha_composite(ret2, ret1)
+    ret3.paste(tab[2], leftB)
+    ret = Image.alpha_composite(ret, ret3)
+    ret4.paste(tab[3], rightB)
+    ret = Image.alpha_composite(ret, ret4)
 
     return ret
 
@@ -65,11 +72,6 @@ m1 = m[0]
 m2 = m[1]
 m3 = m[2]
 m4 = m[3]
-
-m1.show()
-m2.show()
-m3.show()
-m4.show()
 
 ass = assemble4(ideal, m)
 
