@@ -189,11 +189,15 @@ def crossover(pop, pool):
     return ret
 
 def dump_best(pop, it, strx):
+    if not os.path.exists(disk + "/" + folder):
+        os.mkdir(disk + "/" + folder)
+    if not os.path.exists(disk + "/" + folder + "/" + strx):
+        os.mkdir(disk + "/" + folder + "/" + strx)
     best = pop[0]
     for i in range(len(pop)):
         if pop[i]['fit'] < best['fit']:
             best = pop[i]
-    best['pic'].save("F:/" + folder + "/" + str(strx) + "/" + str(strx) + "-" + str(it) + ".png")
+    best['pic'].save(disk + "/" + folder + "/" + str(strx) + "/" + str(strx) + "-" + str(it) + ".png")
 
 def printPop(pop, it, strx):
     ret = ""
@@ -235,12 +239,12 @@ Główna pętla programu
 '''
 
 # read image as RGB and add alpha (transparency)
-m1 = Image.open("m1.png").convert("RGBA")
-m2 = Image.open("m2.png").convert("RGBA")
-m3 = Image.open("m3.png").convert("RGBA")
-m4 = Image.open("m4.png").convert("RGBA")
-
 ideal = Image.open("MonaLisa.png").convert("RGBA")
+m = crop4(ideal)
+m1 = m[0]
+m2 = m[1]
+m3 = m[2]
+m4 = m[3]
 
 
 # Sterowanie
@@ -248,24 +252,25 @@ ilosc_w_populacji = 100
 ilosc_petli = 10000
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
-folder = "INZ6v4"
+folder = "INZ7v4"
+disk = "F:"
 
-out = "F:/" + folder + "/out.txt"
+out = disk + "/" + folder + "/out.txt"
 
 run(m1, "m1")
 run(m2, "m2")
 run(m3, "m3")
 run(m4, "m4")
 
-a1 = Image.open("F:/" + folder + "/m1/m1-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
-a2 = Image.open("F:/" + folder + "/m2/m2-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
-a3 = Image.open("F:/" + folder + "/m3/m3-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
-a4 = Image.open("F:/" + folder + "/m4/m4-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
+a1 = Image.open(disk + "/" + folder + "/m1/m1-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
+a2 = Image.open(disk + "/" + folder + "/m2/m2-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
+a3 = Image.open(disk + "/" + folder + "/m3/m3-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
+a4 = Image.open(disk + "/" + folder + "/m4/m4-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
 
 ass = assemble4(ideal, [a1, a2, a3, a4])
-ass.save("F:/" + folder + "/output.png")
+ass.save(disk + "/" + folder + "/output.png")
 
-bss = Image.open("F:/INZ5v32/99999.png").convert("RGBA")
+bss = Image.open(disk + "/INZ5v32/99999.png").convert("RGBA")
 
 print("Nowa wersja algorytmu: %s" % distance2(ideal, ass))
 print("Stara wersja algorytmu: %s" % distance2(ideal, bss))
