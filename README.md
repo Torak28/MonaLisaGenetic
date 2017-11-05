@@ -4,7 +4,7 @@
 
 ### ToDo:
 
- * Dodać skrypt łączacy wszystkie cztery przejscia
+ * Zmienić funkcje printujaco do pliku
  * Może 16 małych części?
  * Jakoś ogarnąć sytuację z "oknem"
 
