@@ -1,5 +1,5 @@
-import random, operator, math, numpy, os
-from PIL import Image, ImageDraw, ImageChops, ImageStat
+import operator, math
+from PIL import Image, ImageChops
 
 def crop16(org):
     ret4 = crop4(org)
@@ -9,10 +9,6 @@ def crop16(org):
     ret16.extend(crop4(ret4[3]))
 
     return ret16
-
-def crop16size(org):
-    width, height = org.size
-    return width//2, height//2
 
 def assemble16(org, tab):
     org1 = crop4(org)
