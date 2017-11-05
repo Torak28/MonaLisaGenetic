@@ -5,10 +5,10 @@ def crop4(org):
     ret = []
     width, height = org.size
 
-    leftT = 0, 0, width//2, height//2
-    rightT = width//2, 0, width, height//2
-    leftB = 0, height//2, width//2, height
-    rightB = width//2, height//2, width, height
+    leftT = 0, 0, width // 2 + 10, height // 2
+    rightT = width // 2, 0, width, height // 2 + 10
+    leftB = 0, height // 2 - 10, width // 2, height
+    rightB = width // 2 - 10, height // 2, width, height
 
     ret.append(org.crop(leftT))
     ret.append(org.crop(rightT))
@@ -21,10 +21,10 @@ def assemble4(org, tab):
     ret = Image.new('RGBA', org.size, (0, 0, 0, 255))
     width, height = org.size
 
-    leftT = 0, 0, width // 2, height // 2
-    rightT = width // 2, 0, width, height // 2
-    leftB = 0, height // 2, width // 2, height
-    rightB = width // 2, height // 2, width, height
+    leftT = 0, 0, width // 2 + 10, height // 2
+    rightT = width // 2, 0, width, height // 2 + 10
+    leftB = 0, height // 2 - 10, width // 2, height
+    rightB = width // 2 - 10, height // 2, width, height
 
     ret.paste(tab[0], leftT)
     ret.paste(tab[1], rightT)
