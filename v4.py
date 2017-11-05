@@ -18,7 +18,11 @@ def crop4(org):
     return ret
 
 def assemble4(org, tab):
-    ret = Image.new('RGBA', org.size, (0, 0, 0, 255))
+    ret1 = Image.new('RGBA', org.size, (0, 0, 0, 0))
+    ret2 = Image.new('RGBA', org.size, (0, 0, 0, 0))
+    ret3 = Image.new('RGBA', org.size, (0, 0, 0, 0))
+    ret4 = Image.new('RGBA', org.size, (0, 0, 0, 0))
+
     width, height = org.size
 
     leftT = 0, 0, width // 2 + 10, height // 2
@@ -26,15 +30,18 @@ def assemble4(org, tab):
     leftB = 0, height // 2 - 10, width // 2, height
     rightB = width // 2 - 10, height // 2, width, height
 
-    ret.paste(tab[0], leftT)
-    ret.paste(tab[1], rightT)
-    ret.paste(tab[2], leftB)
-    ret.paste(tab[3], rightB)
+    ret1.paste(tab[0], leftT)
+    ret2.paste(tab[1], rightT)
+    ret = Image.alpha_composite(ret2, ret1)
+    ret3.paste(tab[2], leftB)
+    ret = Image.alpha_composite(ret, ret3)
+    ret4.paste(tab[3], rightB)
+    ret = Image.alpha_composite(ret, ret4)
 
     return ret
 
 def darkPicture(N):
-    ret = Image.new('RGBA', N.size, (0, 0, 0, 255))
+    ret = Image.new('RGBA', N.size, (0, 0, 0, 0))
     return ret
 
 def reduce(function, iterable, initializer=None):
@@ -213,7 +220,7 @@ def run(mona, strx):
     dark = darkPicture(mona)
     fit = distance2(mona, dark)
 
-    if (os.path.isfile(out)):
+    if not os.path.exists(out):
         open(out, 'w').close()
 
     # Tworzenie N osobnikow losowych
@@ -270,7 +277,7 @@ a4 = Image.open(disk + "/" + folder + "/m4/m4-" + str(ilosc_petli - 1) + ".png")
 ass = assemble4(ideal, [a1, a2, a3, a4])
 ass.save(disk + "/" + folder + "/output.png")
 
-bss = Image.open(disk + "/INZ5v32/99999.png").convert("RGBA")
+bss = Image.open(disk + "/INZ6v4/output.png").convert("RGBA")
 
 print("Nowa wersja algorytmu: %s" % distance2(ideal, ass))
 print("Stara wersja algorytmu: %s" % distance2(ideal, bss))
