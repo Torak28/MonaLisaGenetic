@@ -1,6 +1,34 @@
 import random, operator, math, numpy, os
 from PIL import Image, ImageDraw, ImageChops, ImageStat
 
+def crop16(org):
+    ret4 = crop4(org)
+    ret16 = crop4(ret4[0])
+    ret16.extend(crop4(ret4[1]))
+    ret16.extend(crop4(ret4[2]))
+    ret16.extend(crop4(ret4[3]))
+
+    return ret16
+
+def crop16size(org):
+    width, height = org.size
+    return width//2, height//2
+
+def assemble16(org, tab):
+    org1 = crop4(org)
+
+    pic = []
+
+    pic.append(assemble4(org1[0], [tab[0], tab[1], tab[2], tab[3]]))
+    pic.append(assemble4(org1[1], [tab[4], tab[5], tab[6], tab[7]]))
+    pic.append(assemble4(org1[2], [tab[8], tab[9], tab[10], tab[11]]))
+    pic.append(assemble4(org1[3], [tab[12], tab[13], tab[14], tab[15]]))
+
+    ret = assemble4(org, pic)
+
+    return ret
+
+
 def crop4(org):
     ret = []
     width, height = org.size
@@ -67,12 +95,8 @@ def distance2(org, N):
     return ret
 
 ideal = Image.open("MonaLisa.png").convert("RGBA")
-m = crop4(ideal)
-m1 = m[0]
-m2 = m[1]
-m3 = m[2]
-m4 = m[3]
+m = crop16(ideal)
 
-ass = assemble4(ideal, m)
+ass = assemble16(ideal, m)
 
 print(distance2(ideal, ass))
