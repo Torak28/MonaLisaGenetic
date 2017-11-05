@@ -4,7 +4,7 @@
 
 ### ToDo:
 
- * Może 16 małych części?
+ * Naprawa okna
 
 ### Wersje:
 
@@ -12,6 +12,7 @@
  * **v2** - druga wersja z kołem, trójkątem i kwadratem
  * **v3** - trzecia wersja ze średnim kolorem i super szybkim liczeniem różnic
  * **v4** - czwarta wersja z podziełem na 4 części
+ * **v5** - piąta wersja z podziałem na 16 i większą dozą automatyzacji tworzenia drzewa katalogów itd.
 
 ### Czas
 
