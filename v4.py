@@ -205,6 +205,7 @@ def dump_best(pop, it, strx):
         if pop[i]['fit'] < best['fit']:
             best = pop[i]
     best['pic'].save(disk + "/" + folder + "/" + str(strx) + "/" + str(strx) + "-" + str(it) + ".png")
+    return best['pic']
 
 def printPop(pop, it, strx):
     ret = ""
@@ -234,13 +235,14 @@ def run(mona, strx):
         # Ocena( 0 - 100 )
         populacja = score(populacja, ilosc_w_populacji, mona)
         # Zrzucanie najlepszego w populacji
-        dump_best(populacja, p, strx)
+        bst = dump_best(populacja, p, strx)
         printPop(populacja, p, strx)
         # Tworzenie poli rozrodczej do krzyżowania
         pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
         # Krzyzowanie i nowa populacja
         populacja = crossover(populacja, pola_rozrodcza)
 
+    return bst
 '''
 Główna pętla programu
 '''
@@ -264,15 +266,10 @@ disk = "F:"
 
 out = disk + "/" + folder + "/out.txt"
 
-run(m1, "m1")
-run(m2, "m2")
-run(m3, "m3")
-run(m4, "m4")
-
-a1 = Image.open(disk + "/" + folder + "/m1/m1-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
-a2 = Image.open(disk + "/" + folder + "/m2/m2-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
-a3 = Image.open(disk + "/" + folder + "/m3/m3-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
-a4 = Image.open(disk + "/" + folder + "/m4/m4-" + str(ilosc_petli - 1) + ".png").convert("RGBA")
+a1 = run(m1, "m1")
+a2 = run(m2, "m2")
+a3 = run(m3, "m3")
+a4 = run(m4, "m4")
 
 ass = assemble4(ideal, [a1, a2, a3, a4])
 ass.save(disk + "/" + folder + "/output.png")
