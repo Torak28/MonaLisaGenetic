@@ -215,6 +215,8 @@ def run(mona, strx):
     dark = darkPicture(mona)
     fit = distance2(mona, dark)
 
+    if not os.path.exists(disk + "/" + folder):
+        os.mkdir(disk + "/" + folder)
     if not os.path.exists(out):
         open(out, 'w').close()
 
