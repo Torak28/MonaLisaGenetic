@@ -5,6 +5,7 @@
 ### ToDo:
 
  * Naprawa okna
+ * A moze kolejne poglebienie?
 
 ### Wersje:
 
