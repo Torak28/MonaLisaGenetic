@@ -7,11 +7,11 @@ def ellipse(org, N):
     x = random.randint(-20, org.size[0] - 1)
     y = random.randint(-20, org.size[1] - 1)
     if x < 0:
-        w = random.randint(0, org.size[0] + 20)
+        w = random.randint(1, org.size[0] + 20)
     else:
         w = random.randint(x + 1, org.size[0] + 20)
     if y < 0:
-        h = random.randint(y + 1, org.size[1] + 20)
+        h = random.randint(1, org.size[1] + 20)
     else:
         h = random.randint(y + 1, org.size[1] + 20)
     col = find_median_colorE(org, x, y, w, h)
@@ -29,11 +29,11 @@ def square(org, N):
     x = random.randint(-20, org.size[0] - 1)
     y = random.randint(-20, org.size[1] - 1)
     if x < 0:
-        w = random.randint(0, org.size[0] + 20)
+        w = random.randint(1, org.size[0] + 20)
     else:
         w = random.randint(x + 1, org.size[0] + 20)
     if y < 0:
-        h = random.randint(y + 1, org.size[1] + 20)
+        h = random.randint(1, org.size[1] + 20)
     else:
         h = random.randint(y + 1, org.size[1] + 20)
     col = find_median_colorS(org, x, y, w, h)
@@ -88,7 +88,7 @@ def find_median_colorE(N, x, y, w, h):
 
 
 def darkPicture(N):
-    ret = Image.new('RGBA', N.size, (255, 255, 255, 0))
+    ret = Image.new('RGBA', N.size, (0, 0, 0, 0))
     return ret
 
 wartosc_alphy = 126
