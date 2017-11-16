@@ -4,7 +4,7 @@
 
 ### ToDo:
 
- * A moze kolejne poglebienie?
+ * Aktualnie 64 poglenienia
 
 ### Wersje:
 
@@ -13,6 +13,7 @@
  * **v3** - trzecia wersja ze średnim kolorem i super szybkim liczeniem różnic
  * **v4** - czwarta wersja z podziełem na 4 części
  * **v5** - piąta wersja z podziałem na 16 i większą dozą automatyzacji tworzenia drzewa katalogów itd.
+ * **v6** - szósta wersja z podziałem na 64 i brakiem okna
 
 ### Czas
 
