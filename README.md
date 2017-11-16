@@ -4,7 +4,7 @@
 
 ### ToDo:
 
- * Aktualnie 64 poglenienia
+ * jakieś czarne kształty powstałe podczas sklejania zdjęć
 
 ### Wersje:
 
