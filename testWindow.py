@@ -97,7 +97,7 @@ dark1 = darkPicture(ideal)
 dark2 = darkPicture(ideal)
 dark3 = darkPicture(ideal)
 
-for i in range(2000):
+for i in range(10000):
     dark1 = polygon(ideal, dark1)
     dark2 = ellipse(ideal, dark2)
     dark3 = square(ideal, dark3)
