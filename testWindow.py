@@ -18,7 +18,7 @@ def ellipse(org, N):
     R = col[0]
     G = col[1]
     B = col[2]
-    A = random.randint(0, 255)
+    A = random.randint(0, wartosc_alphy)
     ret.ellipse(((x,y),(w,h)), fill=(R,G,B,A))
     N.paste(tmp,mask=tmp)
     return N
