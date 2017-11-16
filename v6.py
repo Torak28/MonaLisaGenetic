@@ -392,7 +392,7 @@ m64 = m[63]
 
 # Sterowanie
 ilosc_w_populacji = 20 #100
-ilosc_petli = 200 #10000
+ilosc_petli = 500 #10000
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
 folder = "INZ9v6"
