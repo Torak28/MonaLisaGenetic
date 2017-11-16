@@ -83,7 +83,12 @@ def crop4(org):
     return ret
 
 def assemble4(org, tab):
+    ret1 = Image.new('RGBA', org.size)
+    ret2 = Image.new('RGBA', org.size)
+    ret3 = Image.new('RGBA', org.size)
+    ret4 = Image.new('RGBA', org.size)
     ret = Image.new('RGBA', org.size)
+
 
     width, height = org.size
 
@@ -92,10 +97,14 @@ def assemble4(org, tab):
     leftB = 0, height // 2, width // 2, height
     rightB = width // 2, height // 2, width, height
 
-    ret.paste(tab[0], leftT)
-    ret.paste(tab[1], rightT)
-    ret.paste(tab[2], leftB)
-    ret.paste(tab[3], rightB)
+    ret1.paste(tab[0], leftT)
+    ret2.paste(tab[1], rightT)
+    ret3.paste(tab[2], leftB)
+    ret4.paste(tab[3], rightB)
+
+    ret = Image.alpha_composite(ret1, ret2)
+    ret = Image.alpha_composite(ret, ret3)
+    ret = Image.alpha_composite(ret, ret4)
 
     return ret
 
@@ -174,6 +183,7 @@ def ellipse(org, N):
     A = random.randint(0, wartosc_alphy)
     ret.ellipse(((x,y),(w,h)), fill=(R,G,B,A))
     N.paste(tmp,mask=tmp)
+    N = Image.alpha_composite(N, tmp)
     return N
 
 def square(org, N):
@@ -196,6 +206,8 @@ def square(org, N):
     A = random.randint(0, wartosc_alphy)
     ret.rectangle(((x,y),(w,h)), fill=(R,G,B,A))
     N.paste(tmp,mask=tmp)
+    #nowosc
+    N = Image.alpha_composite(N, tmp)
     return N
 
 def polygon(org, N):
@@ -213,6 +225,7 @@ def polygon(org, N):
     A = random.randint(0, wartosc_alphy)
     ret.polygon(tup, fill=(R, G, B, A))
     N.paste(tmp, mask=tmp)
+    N = Image.alpha_composite(N, tmp)
     return N
 
 # Krzyżowanie

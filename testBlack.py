@@ -18,7 +18,12 @@ def crop4(org):
     return ret
 
 def assemble4(org, tab):
+    ret1 = Image.new('RGBA', org.size)
+    ret2 = Image.new('RGBA', org.size)
+    ret3 = Image.new('RGBA', org.size)
+    ret4 = Image.new('RGBA', org.size)
     ret = Image.new('RGBA', org.size)
+
 
     width, height = org.size
 
@@ -27,10 +32,14 @@ def assemble4(org, tab):
     leftB = 0, height // 2, width // 2, height
     rightB = width // 2, height // 2, width, height
 
-    ret.paste(tab[0], leftT)
-    ret.paste(tab[1], rightT)
-    ret.paste(tab[2], leftB)
-    ret.paste(tab[3], rightB)
+    ret1.paste(tab[0], leftT)
+    ret2.paste(tab[1], rightT)
+    ret3.paste(tab[2], leftB)
+    ret4.paste(tab[3], rightB)
+
+    ret = Image.alpha_composite(ret1, ret2)
+    ret = Image.alpha_composite(ret, ret3)
+    ret = Image.alpha_composite(ret, ret4)
 
     return ret
 
@@ -69,4 +78,4 @@ ideal = Image.open("MonaLisa.png").convert("RGBA")
 
 ass = assemble16(ideal, [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16])
 ass.show()
-#ass.save(disk + "/" + folder + "/output.png")
+ass.save("xd.png")
