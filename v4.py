@@ -267,7 +267,10 @@ ilosc_petli = 40000
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
 folder = "INZ7v4"
-disk = "F:/INZ/"
+disk = "E:/INZ"
+
+if not os.path.exists(disk ):
+    os.mkdir(disk)
 
 out = disk + "/" + folder + "/out.txt"
 
