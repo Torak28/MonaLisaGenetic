@@ -27,10 +27,10 @@ def assemble4(org, tab):
     leftB = 0, height // 2, width // 2, height
     rightB = width // 2, height // 2, width, height
 
-    ret.paste(tab[0], leftT, mask=tab[0])
-    ret.paste(tab[1], rightT, mask=tab[1])
-    ret.paste(tab[2], leftB, mask=tab[2])
-    ret.paste(tab[3], rightB, mask=tab[3])
+    ret.paste(tab[0], leftT)
+    ret.paste(tab[1], rightT)
+    ret.paste(tab[2], leftB)
+    ret.paste(tab[3], rightB)
 
     return ret
 
