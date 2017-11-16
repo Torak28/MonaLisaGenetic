@@ -299,8 +299,8 @@ m16 = m[15]
 
 
 # Sterowanie
-ilosc_w_populacji = 100
-ilosc_petli = 1000 #10000
+ilosc_w_populacji = 20 #100
+ilosc_petli = 500 #10000
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
 folder = "INZ8v5"
