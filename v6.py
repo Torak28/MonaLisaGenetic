@@ -160,18 +160,18 @@ def ellipse(org, N):
     x = random.randint(-20, org.size[0] - 1)
     y = random.randint(-20, org.size[1] - 1)
     if x < 0:
-        w = random.randint(0, org.size[0] + 20)
+        w = random.randint(1, org.size[0] + 20)
     else:
         w = random.randint(x + 1, org.size[0] + 20)
     if y < 0:
-        h = random.randint(y + 1, org.size[1] + 20)
+        h = random.randint(1, org.size[1] + 20)
     else:
         h = random.randint(y + 1, org.size[1] + 20)
     col = find_median_colorE(org, x, y, w, h)
     R = col[0]
     G = col[1]
     B = col[2]
-    A = random.randint(0, 255)
+    A = random.randint(0, wartosc_alphy)
     ret.ellipse(((x,y),(w,h)), fill=(R,G,B,A))
     N.paste(tmp,mask=tmp)
     return N
@@ -182,11 +182,11 @@ def square(org, N):
     x = random.randint(-20, org.size[0] - 1)
     y = random.randint(-20, org.size[1] - 1)
     if x < 0:
-        w = random.randint(0, org.size[0] + 20)
+        w = random.randint(1, org.size[0] + 20)
     else:
         w = random.randint(x + 1, org.size[0] + 20)
     if y < 0:
-        h = random.randint(y + 1, org.size[1] + 20)
+        h = random.randint(1, org.size[1] + 20)
     else:
         h = random.randint(y + 1, org.size[1] + 20)
     col = find_median_colorS(org, x, y, w, h)
