@@ -262,8 +262,8 @@ m4 = m[3]
 
 
 # Sterowanie
-ilosc_w_populacji = 20 #100
-ilosc_petli = 1000 #40000
+ilosc_w_populacji = 100
+ilosc_petli = 40000
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
 folder = "INZ7v4"
