@@ -232,8 +232,8 @@ def Add(P1, P2):
     return ret
 
 def mapFromTo(x,a,b,c,d):
-   ret = (x - a) /(b - a) * (d - c) + c
-   return ret
+    ret = (x - a) /(b - a) * (d - c) + c
+    return ret
 
 def mutate(pop, pop_size, pop_it, org):
     for i in range(pop_size):
@@ -291,7 +291,7 @@ def printPop(pop, it, strx):
     ret += "Populacja " + str(strx) + " - " + str(it) + " (" + str(len(pop)) + ") : "
     pop = sorted(pop, key=lambda x: (x['fit']))
     for _ in range(len(pop)):
-       ret += " " + str(pop[_]['fit'])
+        ret += " " + str(pop[_]['fit'])
     print(ret, file=open(out, "a"))
     print(ret)
 
