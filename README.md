@@ -8,6 +8,7 @@
  * Pozbyć się brzydactwa z v4 i v5
  * v6 dziala na dysku D
  * W wersji testowej black jest ten sam bląd. Teraz nie wiem czy to części są złe czy złożenie(bmp?)
+ * Napisać automatyzacje do .pyx i coś ogarnąć z tym pisaniem do pliku
 
 
 ### Wersje:
