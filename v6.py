@@ -349,7 +349,7 @@ out = disk + "/" + folder + "/out.txt"
 
 a = []
 for i in range(1, 65):
-    a.append(run(m[i], 'm' + str(i)))
+    a.append(run(m[i-1], 'm' + str(i)))
 
 ass = assemble64(ideal, a)
 ass.save(disk + "/" + folder + "/output.bmp")
