@@ -6,7 +6,7 @@
 
  * jakieś czarne kształty powstałe podczas sklejania zdjęć
  * Pozbyć się brzydactwa z v4 i v5
- * Dodać do v6 poprzednia funkcje czytania best. Ta aktualna tylko spowalnia
+ * v6 dziala na dysku D
  * W wersji testowej black jest ten sam bląd. Teraz nie wiem czy to części są złe czy złożenie(bmp?)
 
 
