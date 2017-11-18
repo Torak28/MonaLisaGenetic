@@ -74,7 +74,6 @@ d = []
 for i in range(1, 65):
     d.append(Image.open('D:\INZ2\INZ9v6\m' + str(i) + '\m' + str(i) + '-199.png').convert("RGBA"))
 
-
 ideal = Image.open("MonaLisa.png").convert("RGBA")
 
 ass = assemble64(ideal, d)
