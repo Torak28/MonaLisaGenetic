@@ -87,8 +87,6 @@ def assemble4(org, tab):
     ret2 = Image.new('RGBA', org.size)
     ret3 = Image.new('RGBA', org.size)
     ret4 = Image.new('RGBA', org.size)
-    ret = Image.new('RGBA', org.size)
-
 
     width, height = org.size
 
@@ -328,7 +326,7 @@ def run(mona, strx):
         populacja = score(populacja, ilosc_w_populacji, mona)
         # Zrzucanie najlepszego w populacji
         bst.append(dump_best(populacja, p, strx))
-        # printPop(populacja, p, strx)
+        printPop(populacja, p, strx)
         # Tworzenie poli rozrodczej do krzyżowania
         pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
         # Krzyzowanie i nowa populacja
@@ -343,73 +341,6 @@ Główna pętla programu
 ideal = Image.open("MonaLisa.png").convert("RGBA")
 m = crop64(ideal)
 
-m1 = m[0]
-m2 = m[1]
-m3 = m[2]
-m4 = m[3]
-m5 = m[4]
-m6 = m[5]
-m7 = m[6]
-m8 = m[7]
-m9 = m[8]
-m10 = m[9]
-m11 = m[10]
-m12 = m[11]
-m13 = m[12]
-m14 = m[13]
-m15 = m[14]
-m16 = m[15]
-m17 = m[16]
-m18 = m[17]
-m19 = m[18]
-m20 = m[19]
-m21 = m[20]
-m22 = m[21]
-m23 = m[22]
-m24 = m[23]
-m25 = m[24]
-m26 = m[25]
-m27 = m[26]
-m28 = m[27]
-m29 = m[28]
-m30 = m[29]
-m31 = m[30]
-m32 = m[31]
-m33 = m[32]
-m34 = m[33]
-m35 = m[34]
-m36 = m[35]
-m37 = m[36]
-m38 = m[37]
-m39 = m[38]
-m40 = m[39]
-m41 = m[40]
-m42 = m[41]
-m43 = m[42]
-m44 = m[43]
-m45 = m[44]
-m46 = m[45]
-m47 = m[46]
-m48 = m[47]
-m49 = m[48]
-m50 = m[49]
-m51 = m[50]
-m52 = m[51]
-m53 = m[52]
-m54 = m[53]
-m55 = m[54]
-m56 = m[55]
-m57 = m[56]
-m58 = m[57]
-m59 = m[58]
-m60 = m[59]
-m61 = m[60]
-m62 = m[61]
-m63 = m[62]
-m64 = m[63]
-
-
-
 # Sterowanie
 ilosc_w_populacji = 20
 ilosc_petli = 200
@@ -423,72 +354,11 @@ if not os.path.exists(disk ):
 
 out = disk + "/" + folder + "/out.txt"
 
-a1 = run(m1, "m1")
-a2 = run(m2, "m2")
-a3 = run(m3, "m3")
-a4 = run(m4, "m4")
-a5 = run(m5, "m5")
-a6 = run(m6, "m6")
-a7 = run(m7, "m7")
-a8 = run(m8, "m8")
-a9 = run(m9, "m9")
-a10 = run(m10, "m10")
-a11 = run(m11, "m11")
-a12 = run(m12, "m12")
-a13 = run(m13, "m13")
-a14 = run(m14, "m14")
-a15 = run(m15, "m15")
-a16 = run(m16, "m16")
-a17 = run(m17, "m17")
-a18 = run(m18, "m18")
-a19 = run(m19, "m19")
-a20 = run(m20, "m20")
-a21 = run(m21, "m21")
-a22 = run(m22, "m22")
-a23 = run(m23, "m23")
-a24 = run(m24, "m24")
-a25 = run(m25, "m25")
-a26 = run(m26, "m26")
-a27 = run(m27, "m27")
-a28 = run(m28, "m28")
-a29 = run(m29, "m29")
-a30 = run(m30, "m30")
-a31 = run(m31, "m31")
-a32 = run(m32, "m32")
-a33 = run(m33, "m33")
-a34 = run(m34, "m34")
-a35 = run(m35, "m35")
-a36 = run(m36, "m36")
-a37 = run(m37, "m37")
-a38 = run(m38, "m38")
-a39 = run(m39, "m39")
-a40 = run(m40, "m40")
-a41 = run(m41, "m41")
-a42 = run(m42, "m42")
-a43 = run(m43, "m43")
-a44 = run(m44, "m44")
-a45 = run(m45, "m45")
-a46 = run(m46, "m46")
-a47 = run(m47, "m47")
-a48 = run(m48, "m48")
-a49 = run(m49, "m49")
-a50 = run(m50, "m50")
-a51 = run(m51, "m51")
-a52 = run(m52, "m52")
-a53 = run(m53, "m53")
-a54 = run(m54, "m54")
-a55 = run(m55, "m55")
-a56 = run(m56, "m56")
-a57 = run(m57, "m57")
-a58 = run(m58, "m58")
-a59 = run(m59, "m59")
-a60 = run(m60, "m60")
-a61 = run(m61, "m61")
-a62 = run(m62, "m62")
-a63 = run(m63, "m63")
-a64 = run(m64, "m64")
+a = []
+for i in range(1, 65):
+    a.append(run(m[i], 'm' + str(i)))
 
-ass = assemble64(ideal, [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45, a46, a47, a48, a49, a50, a51, a52, a53, a54, a55, a56, a57, a58, a59, a60, a61, a62, a63, a64])
+ass = assemble64(ideal, a)
 ass.save(disk + "/" + folder + "/output.png")
 
 bss = Image.open(disk + "/INZ6v4/output.png").convert("RGBA")

@@ -22,7 +22,6 @@ def assemble4(org, tab):
     ret2 = Image.new('RGBA', org.size)
     ret3 = Image.new('RGBA', org.size)
     ret4 = Image.new('RGBA', org.size)
-    ret = Image.new('RGBA', org.size)
 
 
     width, height = org.size
@@ -57,25 +56,27 @@ def assemble16(org, tab):
 
     return ret
 
-a1 = Image.open('E:\INZ\INZ8v5\m1\m1-499.png').convert("RGBA")
-a2 = Image.open('E:\INZ\INZ8v5\m2\m2-499.png').convert("RGBA")
-a3 = Image.open('E:\INZ\INZ8v5\m3\m3-499.png').convert("RGBA")
-a4 = Image.open('E:\INZ\INZ8v5\m4\m4-499.png').convert("RGBA")
-a5 = Image.open('E:\INZ\INZ8v5\m5\m5-499.png').convert("RGBA")
-a6 = Image.open('E:\INZ\INZ8v5\m6\m6-499.png').convert("RGBA")
-a7 = Image.open('E:\INZ\INZ8v5\m7\m7-499.png').convert("RGBA")
-a8 = Image.open('E:\INZ\INZ8v5\m8\m8-499.png').convert("RGBA")
-a9 = Image.open('E:\INZ\INZ8v5\m9\m9-499.png').convert("RGBA")
-a10 = Image.open('E:\INZ\INZ8v5\m10\m10-499.png').convert("RGBA")
-a11 = Image.open('E:\INZ\INZ8v5\m11\m11-499.png').convert("RGBA")
-a12 = Image.open('E:\INZ\INZ8v5\m12\m12-499.png').convert("RGBA")
-a13 = Image.open('E:\INZ\INZ8v5\m13\m13-499.png').convert("RGBA")
-a14 = Image.open('E:\INZ\INZ8v5\m14\m14-499.png').convert("RGBA")
-a15 = Image.open('E:\INZ\INZ8v5\m15\m15-499.png').convert("RGBA")
-a16 = Image.open('E:\INZ\INZ8v5\m16\m16-499.png').convert("RGBA")
+def assemble64(org, tab):
+    org1 = crop4(org)
+
+    pic = []
+
+    pic.append(assemble16(org1[0], [tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], tab[6], tab[7], tab[8], tab[9], tab[10], tab[11], tab[12], tab[13], tab[14], tab[15]]))
+    pic.append(assemble16(org1[1], [tab[16], tab[17], tab[18], tab[19], tab[20], tab[21], tab[22], tab[23], tab[24], tab[25], tab[26], tab[27], tab[28], tab[29], tab[30], tab[31]]))
+    pic.append(assemble16(org1[2], [tab[32], tab[33], tab[34], tab[35], tab[36], tab[37], tab[38], tab[39], tab[40], tab[41], tab[42], tab[43], tab[44], tab[45], tab[46], tab[47]]))
+    pic.append(assemble16(org1[3], [tab[48], tab[49], tab[50], tab[51], tab[52], tab[53], tab[54], tab[55], tab[56], tab[57], tab[58], tab[59], tab[60], tab[61], tab[62], tab[63]]))
+
+    ret = assemble4(org, pic)
+
+    return ret
+
+d = []
+for i in range(1, 65):
+    d.append(Image.open('D:\INZ2\INZ9v6\m' + str(i) + '\m' + str(i) + '-199.png').convert("RGBA"))
+
 
 ideal = Image.open("MonaLisa.png").convert("RGBA")
 
-ass = assemble16(ideal, [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16])
+ass = assemble64(ideal, d)
 ass.show()
 ass.save("xd.png")

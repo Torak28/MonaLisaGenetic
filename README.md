@@ -5,6 +5,10 @@
 ### ToDo:
 
  * jakieś czarne kształty powstałe podczas sklejania zdjęć
+ * Pozbyć się brzydactwa z v4 i v5
+ * Dodać do v6 poprzednia funkcje czytania best. Ta aktualna tylko spowalnia
+ * W wersji testowej black wszystko śmiga jak ta lala. Coś się tutaj może pamięcioweo czy coś nie zgadza
+
 
 ### Wersje:
 
