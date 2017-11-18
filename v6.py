@@ -286,7 +286,7 @@ def dump_best(pop, it, strx):
         if pop[i]['fit'] < best['fit']:
             best = pop[i]
     best['pic'].save(disk + "/" + folder + "/" + str(strx) + "/" + str(strx) + "-" + str(it) + ".png")
-    return best['pic']
+    return best
 
 def printPop(pop, it, strx):
     ret = ""
@@ -296,6 +296,13 @@ def printPop(pop, it, strx):
        ret += " " + str(pop[_]['fit'])
     print(ret, file=open(out, "a"))
     print(ret)
+
+def minFunc(pop):
+    bst = pop[0]
+    for i in range(len(pop)):
+        if pop[i]['fit'] < bst[i]['fit']:
+            bst = pop[i]['fit']
+    return bst['pic']
 
 def run(mona, strx):
     populacja = []
@@ -311,7 +318,7 @@ def run(mona, strx):
     for i in range(ilosc_w_populacji):
         populacja.append({'pic': dark, 'fit': fit})
 
-    bst = 0
+    bst = []
 
     # Życie
     for p in range(ilosc_petli):
@@ -320,14 +327,14 @@ def run(mona, strx):
         # Ocena( 0 - 100 )
         populacja = score(populacja, ilosc_w_populacji, mona)
         # Zrzucanie najlepszego w populacji
-        bst = dump_best(populacja, p, strx)
+        bst.append(dump_best(populacja, p, strx))
         printPop(populacja, p, strx)
         # Tworzenie poli rozrodczej do krzyżowania
         pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
         # Krzyzowanie i nowa populacja
         populacja = crossover(populacja, pola_rozrodcza)
 
-    return bst
+    return minFunc(bst)
 '''
 Główna pętla programu
 '''
