@@ -300,8 +300,8 @@ def printPop(pop, it, strx):
 def minFunc(pop):
     bst = pop[0]
     for i in range(len(pop)):
-        if pop[i]['fit'] < bst[i]['fit']:
-            bst = pop[i]['fit']
+        if pop[i]['fit'] < bst['fit']:
+            bst = pop[i]
     return bst['pic']
 
 def run(mona, strx):
@@ -328,7 +328,7 @@ def run(mona, strx):
         populacja = score(populacja, ilosc_w_populacji, mona)
         # Zrzucanie najlepszego w populacji
         bst.append(dump_best(populacja, p, strx))
-        printPop(populacja, p, strx)
+        # printPop(populacja, p, strx)
         # Tworzenie poli rozrodczej do krzyżowania
         pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
         # Krzyzowanie i nowa populacja
@@ -411,12 +411,12 @@ m64 = m[63]
 
 
 # Sterowanie
-ilosc_w_populacji = 100
-ilosc_petli = 10000
+ilosc_w_populacji = 20
+ilosc_petli = 200
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
 folder = "INZ9v6"
-disk = "E:/INZ"
+disk = "D:/INZ2"
 
 if not os.path.exists(disk ):
     os.mkdir(disk)
