@@ -284,7 +284,7 @@ def dump_best(pop, it, strx):
         if pop[i]['fit'] < best['fit']:
             best = pop[i]
     best['pic'].save(disk + "/" + folder + "/" + str(strx) + "/" + str(strx) + "-" + str(it) + ".png")
-    return best
+    return best['pic']
 
 def printPop(pop, it, strx):
     ret = ""
@@ -294,13 +294,6 @@ def printPop(pop, it, strx):
        ret += " " + str(pop[_]['fit'])
     print(ret, file=open(out, "a"))
     print(ret)
-
-def minFunc(pop):
-    bst = pop[0]
-    for i in range(len(pop)):
-        if pop[i]['fit'] < bst['fit']:
-            bst = pop[i]
-    return bst['pic']
 
 def run(mona, strx):
     populacja = []
@@ -316,7 +309,7 @@ def run(mona, strx):
     for i in range(ilosc_w_populacji):
         populacja.append({'pic': dark, 'fit': fit})
 
-    bst = []
+    bst = 0
 
     # Życie
     for p in range(ilosc_petli):
@@ -325,14 +318,14 @@ def run(mona, strx):
         # Ocena( 0 - 100 )
         populacja = score(populacja, ilosc_w_populacji, mona)
         # Zrzucanie najlepszego w populacji
-        bst.append(dump_best(populacja, p, strx))
+        bst = dump_best(populacja, p, strx)
         printPop(populacja, p, strx)
         # Tworzenie poli rozrodczej do krzyżowania
         pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
         # Krzyzowanie i nowa populacja
         populacja = crossover(populacja, pola_rozrodcza)
 
-    return minFunc(bst)
+    return bst
 '''
 Główna pętla programu
 '''
@@ -343,7 +336,7 @@ m = crop64(ideal)
 
 # Sterowanie
 ilosc_w_populacji = 20
-ilosc_petli = 200
+ilosc_petli = 20
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
 folder = "INZ9v6"
@@ -359,7 +352,7 @@ for i in range(1, 65):
     a.append(run(m[i], 'm' + str(i)))
 
 ass = assemble64(ideal, a)
-ass.save(disk + "/" + folder + "/output.png")
+ass.save(disk + "/" + folder + "/output.bmp")
 
 bss = Image.open(disk + "/INZ6v4/output.png").convert("RGBA")
 

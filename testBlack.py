@@ -78,4 +78,4 @@ ideal = Image.open("MonaLisa.png").convert("RGBA")
 
 ass = assemble64(ideal, d)
 ass.show()
-ass.save("xd.png")
+ass.save("xd.bmp")
