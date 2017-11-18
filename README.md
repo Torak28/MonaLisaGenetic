@@ -5,7 +5,6 @@
 ### ToDo:
 
  * jakieś czarne kształty powstałe podczas sklejania zdjęć
- * całkowicie odciąc się od numpy
 
 ### Wersje:
 
