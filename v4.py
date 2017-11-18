@@ -1,4 +1,4 @@
-import random, operator, math, numpy, os
+import random, operator, math, os
 from PIL import Image, ImageDraw, ImageChops, ImageStat
 
 def crop4(org):
@@ -192,8 +192,8 @@ def crossover(pop, pool):
     ret = []
     for i in range(len(pop)):
         child = {}
-        parentA = numpy.random.choice(pool)
-        parentB = numpy.random.choice(pool)
+        parentA = random.choice(pool)
+        parentB = random.choice(pool)
         child['pic'] = Add(parentA['pic'], parentB['pic'])
         ret.append(child)
     return ret
