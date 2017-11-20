@@ -280,23 +280,6 @@ Główna pętla programu
 # read image as RGB and add alpha (transparency)
 ideal = Image.open("MonaLisa.png").convert("RGBA")
 m = crop16(ideal)
-m1 = m[0]
-m2 = m[1]
-m3 = m[2]
-m4 = m[3]
-m5 = m[4]
-m6 = m[5]
-m7 = m[6]
-m8 = m[7]
-m9 = m[8]
-m10 = m[9]
-m11 = m[10]
-m12 = m[11]
-m13 = m[12]
-m14 = m[13]
-m15 = m[14]
-m16 = m[15]
-
 
 # Sterowanie
 ilosc_w_populacji = 100
@@ -304,33 +287,19 @@ ilosc_petli = 10000
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
 folder = "INZ8v5"
-disk = "E:/INZ"
+disk = "D:/INZ2"
 
 if not os.path.exists(disk ):
     os.mkdir(disk)
 
 out = disk + "/" + folder + "/out.txt"
 
-a1 = run(m1, "m1")
-a2 = run(m2, "m2")
-a3 = run(m3, "m3")
-a4 = run(m4, "m4")
-a5 = run(m5, "m5")
-a6 = run(m6, "m6")
-a7 = run(m7, "m7")
-a8 = run(m8, "m8")
-a9 = run(m9, "m9")
-a10 = run(m10, "m10")
-a11 = run(m11, "m11")
-a12 = run(m12, "m12")
-a13 = run(m13, "m13")
-a14 = run(m14, "m14")
-a15 = run(m15, "m15")
-a16 = run(m16, "m16")
+a = []
+for i in range(1, 17):
+    a.append(run(m[i-1], 'm' + str(i)))
 
-
-ass = assemble16(ideal, [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16])
-ass.save(disk + "/" + folder + "/output.png")
+ass = assemble16(ideal, a)
+ass.save(disk + "/" + folder + "/output.bmp")
 
 bss = Image.open(disk + "/INZ6v4/output.png").convert("RGBA")
 
