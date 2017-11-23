@@ -183,7 +183,10 @@ def matingpool(pop, pop_size):
     for k in range(pop_size):
         # Rzutowanie ilosci elementow z aktalnego fita na zakres 100 do 0
         # Dzięki temu mainting pool zawiera więcej dobrych osobników
-        kon = int(mapFromTo(pop[k]['fit'], 0, maxFit, 100, 1))
+        if maxFit == 0:
+            kon = 100
+        else:
+            kon = int(mapFromTo(pop[k]['fit'], 0, maxFit, 100, 1))
         for l in range(kon):
             ret.append(pop[k])
     return ret
