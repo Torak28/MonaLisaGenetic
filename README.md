@@ -5,7 +5,8 @@
 ### ToDo:
 
  * wersja okienkowa
- * Napisać automatyzacje do .pyx i coś ogarnąć z tym pisaniem do pliku
+ * Napisać automatyzacje do .pyx
+ * ogarnąć z tym pisaniem do pliku
 
 
 ### Wersje:
