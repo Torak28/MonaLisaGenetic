@@ -112,7 +112,7 @@ def assemble4(org, tab):
 
 
 def darkPicture(N):
-    ret = Image.new('RGBA', N.size, (0, 0, 0, 0))
+    ret = Image.new('RGBA', N.size, (255, 255, 255, 255))
     return ret
 
 
@@ -148,17 +148,36 @@ def find_median_colorS(N, x, y, w, h):
     tmp = Image.new('L', N.size)
     ret = ImageDraw.Draw(tmp)
 
+    if x < 0:
+        x = 1
+    if y < 0:
+        y = 1
+
+
     ret.rectangle(((x, y), (w, h)), outline=1, fill=1)
     median = ImageStat.Stat(N, mask=tmp).median
+    if (sum(median) < 270):
+        print("S Czarno! %" % median)
     return median
 
+def abs2(list):
+    ret = []
+    for _ in range(len(list)):
+        ret.append(1)
+    return ret
 
 def find_median_colorP(N, tup):
     tmp = Image.new('L', N.size)
     ret = ImageDraw.Draw(tmp)
 
+    chg = [list(x) for x in tup]
+    chg = [abs2(x) for x in chg]
+    tup = tuple(tuple(x) for x in chg)
+
     ret.polygon(tup, outline=1, fill=1)
     median = ImageStat.Stat(N, mask=tmp).median
+    if (sum(median) < 270):
+        print("P Czarno! %" % median)
     return median
 
 
@@ -166,8 +185,15 @@ def find_median_colorE(N, x, y, w, h):
     tmp = Image.new('L', N.size)
     ret = ImageDraw.Draw(tmp)
 
+    if x < 0:
+        x = 1
+    if y < 0:
+        y = 1
+
     ret.ellipse(((x, y), (w, h)), outline=1, fill=1)
     median = ImageStat.Stat(N, mask=tmp).median
+    if(sum(median) < 270):
+        print("E Czarno! %" % median)
     return median
 
 
@@ -213,10 +239,9 @@ def square(org, N):
     R = col[0]
     G = col[1]
     B = col[2]
-    A = random.randint(0, wartosc_alphy)
+    A = random.randint(wartosc_alphy-20, wartosc_alphy)
     ret.rectangle(((x, y), (w, h)), fill=(R, G, B, A))
     N.paste(tmp, mask=tmp)
-    # nowosc
     N = Image.alpha_composite(N, tmp)
     return N
 
@@ -378,13 +403,13 @@ def run(mona, mode):
             wszystkiePopulacje[m] = score(wszystkiePopulacje[m], ilosc_w_populacji, monaCrop[m])
             # Zrzucanie najlepszego w populacji
             bst.append(dump_best(wszystkiePopulacje[m]))
-            printPop(wszystkiePopulacje[m], p, 'm' + str(m))
+            # printPop(wszystkiePopulacje[m], p, 'm' + str(m))
             # Tworzenie poli rozrodczej do krzyżowania
             pola_rozrodcza = matingpool(wszystkiePopulacje[m], ilosc_w_populacji)
             # Krzyzowanie i nowa populacja
             wszystkiePopulacje[m] = crossover(wszystkiePopulacje[m], pola_rozrodcza)
         bstYet = assemble(mode, mona, bst)
-        bstYet.save(disk + '/' + folder + '/m '+ str(p) + '.png')
+        bstYet.save(disk + '/' + folder + '/m '+ str(p) + '.bmp')
     return bstYet
 
 '''
@@ -404,7 +429,7 @@ if __name__ == '__main__':
     out = disk + "/" + folder + "/out.txt"
 
     s = time.time()
-    result = run(ideal, 64)
+    result = run(ideal, 16)
     print("Czas wykonania: %s" % (time.time() - s))
     result.save(disk + "/" + folder + "/output.bmp")
     print(distance2(ideal, result))
