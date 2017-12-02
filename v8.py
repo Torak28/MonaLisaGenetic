@@ -346,7 +346,7 @@ def run(mona, strx, q):
         populacja = score(populacja, ilosc_w_populacji, mona)
         # Zrzucanie najlepszego w populacji
         bst = dump_best(populacja, p, strx)
-        printPop(populacja, p, strx)
+        # printPop(populacja, p, strx)
         # Tworzenie poli rozrodczej do krzyżowania
         pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
         # Krzyzowanie i nowa populacja
