@@ -18,6 +18,7 @@
  * **v4** - czwarta wersja z podziełem na 4 części
  * **v5** - piąta wersja z podziałem na 16 i większą dozą automatyzacji tworzenia drzewa katalogów itd.
  * **v6** - szósta wersja z podziałem na 64 i brakiem okna
+ * **v7** - siódma wersja z podziałem na 256 i nowym sposobem pisania od pliku. Sam podział poprawiony.
 
 ### Czas
 
