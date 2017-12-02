@@ -1,6 +1,5 @@
-import random, operator, math, os, time, queue
+import random, operator, math, os, time, queue, multiprocessing
 from PIL import Image, ImageDraw, ImageChops, ImageStat
-from threading import Thread
 
 def crop256(org):
     ret64 = crop64(org)
@@ -298,16 +297,11 @@ def crossover(pop, pool):
     return ret
 
 
-def dump_best(pop, it, strx):
-    if not os.path.exists(disk + "/" + folder):
-        os.mkdir(disk + "/" + folder)
-    if not os.path.exists(disk + "/" + folder + "/" + strx):
-        os.mkdir(disk + "/" + folder + "/" + strx)
+def dump_best(pop):
     best = pop[0]
     for i in range(len(pop)):
         if pop[i]['fit'] < best['fit']:
             best = pop[i]
-    best['pic'].save(disk + "/" + folder + "/" + str(strx) + "/" + str(strx) + "-" + str(it) + ".png")
     return best['pic']
 
 
@@ -321,11 +315,42 @@ def printPop(pop, it, strx):
     f.write(ret + "\n")
     print(ret)
 
+def assemble(mode, mona, tab):
+    if mode == 4:
+        ret = assemble4(mona, tab)
+    elif mode == 16:
+        ret = assemble16(mona, tab)
+    elif mode == 64:
+        ret = assemble64(mona, tab)
+    elif mode == 256:
+        ret = assemble256(mona, tab)
+    else:
+        ret = assemble256(mona, tab)
 
-def run(mona, strx, q):
-    populacja = []
-    dark = darkPicture(mona)
-    fit = distance2(mona, dark)
+    ret.save(disk + "/" + folder + "/output.bmp")
+
+    return ret
+
+def run(mona, mode):
+
+    monaCrop = []
+    if mode == 4:
+        monaCrop = crop4(mona)
+    elif mode == 16:
+        monaCrop = crop16(mona)
+    elif mode == 64:
+        monaCrop = crop64(mona)
+    elif mode == 256:
+        monaCrop = crop256(mona)
+    else:
+        monaCrop = crop256(mona)
+
+    wszystkiePopulacje = []
+    dark = []
+    fit = []
+    for _ in range(len(monaCrop)):
+        dark.append(darkPicture(monaCrop[_]))
+        fit.append(distance2(monaCrop[0], dark[_]))
 
     if not os.path.exists(disk + "/" + folder):
         os.mkdir(disk + "/" + folder)
@@ -333,82 +358,48 @@ def run(mona, strx, q):
         open(out, 'w').close()
 
     # Tworzenie N osobnikow losowych
-    for i in range(ilosc_w_populacji):
-        populacja.append({'pic': dark, 'fit': fit})
-
-    bst = 0
+    for i in range(mode):
+        populacja = []
+        for j in range(ilosc_w_populacji):
+            populacja.append({'pic': dark[i], 'fit': fit[i]})
+        wszystkiePopulacje.append(populacja)
 
     # Życie
     for p in range(ilosc_petli):
-        # Mutacja
-        populacja = mutate(populacja, ilosc_w_populacji, wspolczynnik_mutacji, mona)
-        # Ocena( 0 - 100 )
-        populacja = score(populacja, ilosc_w_populacji, mona)
-        # Zrzucanie najlepszego w populacji
-        bst = dump_best(populacja, p, strx)
-        # printPop(populacja, p, strx)
-        # Tworzenie poli rozrodczej do krzyżowania
-        pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
-        # Krzyzowanie i nowa populacja
-        populacja = crossover(populacja, pola_rozrodcza)
-
-    q.put(bst)
-
-def aproximate(mona, mode):
-    if not os.path.exists(disk):
-        os.mkdir(disk)
-    if mode == 4:
-        m = crop4(ideal)
-    elif mode == 16:
-        m = crop16(ideal)
-    elif mode == 64:
-        m = crop64(ideal)
-    elif mode == 256:
-        m = crop256(ideal)
-    else:
-        m = crop256(mona)
-
-    q = queue.Queue()
-
-    for i in range(1, (mode + 1)):
-        Thread(target=run(m[i - 1], 'm' + str(i), q), name="Thread" + str(i)).start()
-
-    a = []
-
-    while q.qsize() != 0:
-        a.append(q.get())
-
-    if mode == 4:
-        ass = assemble4(ideal, a)
-    elif mode == 16:
-        ass = assemble16(ideal, a)
-    elif mode == 64:
-        ass = assemble64(ideal, a)
-    elif mode == 256:
-        ass = assemble256(ideal, a)
-    else:
-        ass = assemble256(ideal, a)
-    ass.show()
-    ass.save(disk + "/" + folder + "/output.bmp")
-
+        bst = []
+        for m in range(mode):
+            # Mutacja
+            wszystkiePopulacje[m] = mutate(wszystkiePopulacje[m], ilosc_w_populacji, wspolczynnik_mutacji, monaCrop[m])
+            # Ocena( 0 - 100 )
+            wszystkiePopulacje[m] = score(wszystkiePopulacje[m], ilosc_w_populacji, monaCrop[m])
+            # Zrzucanie najlepszego w populacji
+            bst.append(dump_best(wszystkiePopulacje[m]))
+            printPop(wszystkiePopulacje[m], p, 'm' + str(m))
+            # Tworzenie poli rozrodczej do krzyżowania
+            pola_rozrodcza = matingpool(wszystkiePopulacje[m], ilosc_w_populacji)
+            # Krzyzowanie i nowa populacja
+            wszystkiePopulacje[m] = crossover(wszystkiePopulacje[m], pola_rozrodcza)
+        bstYet = assemble(mode, mona, bst)
+        bstYet.save(disk + '/' + folder + '/m '+ str(p) + '.bmp')
+    return bstYet
 
 '''
 Główna pętla programu
 '''
+if __name__ == '__main__':
+    # read image as RGB and add alpha (transparency)
+    ideal = Image.open("MonaLisa.png").convert("RGBA")
 
-# read image as RGB and add alpha (transparency)
-ideal = Image.open("MonaLisa.png").convert("RGBA")
+    # Sterowanie
+    ilosc_w_populacji = 150
+    ilosc_petli = 1000
+    wspolczynnik_mutacji = 0.1
+    wartosc_alphy = 126
+    folder = "INZ10v8"
+    disk = "D:/INZ2"
+    out = disk + "/" + folder + "/out.txt"
 
-
-# Sterowanie
-ilosc_w_populacji = 20
-ilosc_petli = 50
-wspolczynnik_mutacji = 0.1
-wartosc_alphy = 126
-folder = "test"
-disk = "D:/INZ2"
-out = disk + "/" + folder + "/out.txt"
-
-s = time.time()
-aproximate(ideal, 64)
-print("Czas wykonania: %s" % (time.time() - s))
+    s = time.time()
+    result = run(ideal, 256)
+    print("Czas wykonania: %s" % (time.time() - s))
+    result.save(disk + "/" + folder + "/output.bmp")
