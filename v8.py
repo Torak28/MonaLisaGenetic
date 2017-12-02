@@ -371,7 +371,7 @@ def aproximate(mona, mode):
     q = queue.Queue()
 
     for i in range(1, (mode + 1)):
-        Thread(target=run(m[i - 1], 'm' + str(i), q), name="Thread" + str(i), args=q).start()
+        Thread(target=run(m[i - 1], 'm' + str(i), q), name="Thread" + str(i)).start()
 
     a = []
 
