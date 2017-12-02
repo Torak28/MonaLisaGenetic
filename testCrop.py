@@ -132,8 +132,8 @@ def distance2(org, N):
     return ret
 
 ideal = Image.open("MonaLisa.png").convert("RGBA")
-m = crop64(ideal)
+m = crop256(ideal)
 
-ass = assemble64(ideal, m)
+ass = assemble256(ideal, m)
 
 print(distance2(ideal, ass))
