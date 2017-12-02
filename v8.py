@@ -1,4 +1,4 @@
-import random, operator, math, os, time
+import random, operator, math, os, time, queue
 from PIL import Image, ImageDraw, ImageChops, ImageStat
 from threading import Thread
 
@@ -322,7 +322,7 @@ def printPop(pop, it, strx):
     print(ret)
 
 
-def run(mona, strx):
+def run(mona, strx, q):
     populacja = []
     dark = darkPicture(mona)
     fit = distance2(mona, dark)
@@ -346,11 +346,50 @@ def run(mona, strx):
         populacja = score(populacja, ilosc_w_populacji, mona)
         # Zrzucanie najlepszego w populacji
         bst = dump_best(populacja, p, strx)
-        # printPop(populacja, p, strx)
+        printPop(populacja, p, strx)
         # Tworzenie poli rozrodczej do krzyżowania
         pola_rozrodcza = matingpool(populacja, ilosc_w_populacji)
         # Krzyzowanie i nowa populacja
         populacja = crossover(populacja, pola_rozrodcza)
+
+    q.put(bst)
+
+def aproximate(mona, mode):
+    if not os.path.exists(disk):
+        os.mkdir(disk)
+    if mode == 4:
+        m = crop4(ideal)
+    elif mode == 16:
+        m = crop16(ideal)
+    elif mode == 64:
+        m = crop64(ideal)
+    elif mode == 256:
+        m = crop256(ideal)
+    else:
+        m = crop256(mona)
+
+    q = queue.Queue()
+
+    for i in range(1, (mode + 1)):
+        Thread(target=run(m[i - 1], 'm' + str(i), q), name="Thread" + str(i), args=q).start()
+
+    a = []
+
+    while q.qsize() != 0:
+        a.append(q.get())
+
+    if mode == 4:
+        ass = assemble4(ideal, a)
+    elif mode == 16:
+        ass = assemble16(ideal, a)
+    elif mode == 64:
+        ass = assemble64(ideal, a)
+    elif mode == 256:
+        ass = assemble256(ideal, a)
+    else:
+        ass = assemble256(ideal, a)
+    ass.show()
+    ass.save(disk + "/" + folder + "/output.bmp")
 
 
 '''
@@ -359,30 +398,17 @@ Główna pętla programu
 
 # read image as RGB and add alpha (transparency)
 ideal = Image.open("MonaLisa.png").convert("RGBA")
-m = crop256(ideal)
+
 
 # Sterowanie
 ilosc_w_populacji = 20
-ilosc_petli = 20
+ilosc_petli = 50
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
 folder = "test"
 disk = "D:/INZ2"
-
-if not os.path.exists(disk):
-    os.mkdir(disk)
-
 out = disk + "/" + folder + "/out.txt"
 
-start = time.time()
-for i in range(1, 257):
-    Thread(target=run(m[i - 1], 'm' + str(i))).start()
-print("Czas wykonania: %s" % (time.time() - start))
-
-# ass = assemble256(ideal, a)
-# ass.save(disk + "/" + folder + "/output.bmp")
-
-# bss = Image.open(disk + "/INZ6v4/output.png").convert("RGBA")
-
-# print("Nowa wersja algorytmu: %s" % distance2(ideal, ass))
-# print("Stara wersja algorytmu: %s" % distance2(ideal, bss))
+s = time.time()
+aproximate(ideal, 64)
+print("Czas wykonania: %s" % (time.time() - s))
