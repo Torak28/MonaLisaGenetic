@@ -384,10 +384,32 @@ def aproximate(mona, mode):
 
     for thread in pool:
         thread.join()
-    '''
+
     a = []
     for i in range(1, (mode + 1)):
         a.append(run(m[i - 1], 'm' + str(i)))
+    '''
+
+    q = queue.Queue()
+
+    # Czy to wspólny dostęp do m? nope
+    # Czy to wynik funkcji? nope
+    # Czy użycie poola coś pomaga?
+
+    a = m[0]
+    b = m[1]
+    c = m[1]
+    d = m[2]
+
+    Thread(target=run(a, 'm' + str(1), q), name="Thread" + str(1)).start()
+    Thread(target=run(b, 'm' + str(2), q), name="Thread" + str(2)).start()
+    Thread(target=run(c, 'm' + str(3), q), name="Thread" + str(3)).start()
+    Thread(target=run(d, 'm' + str(4), q), name="Thread" + str(4)).start()
+
+    a = []
+
+    while q.qsize() != 0:
+        a.append(q.get())
 
     if mode == 4:
         ass = assemble4(ideal, a)
@@ -413,7 +435,7 @@ ideal = Image.open("MonaLisa.png").convert("RGBA")
 
 # Sterowanie
 ilosc_w_populacji = 20
-ilosc_petli = 50
+ilosc_petli = 5000
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
 folder = "test"
@@ -421,5 +443,5 @@ disk = "D:/INZ2"
 out = disk + "/" + folder + "/out.txt"
 
 s = time.time()
-aproximate(ideal, 64)
+aproximate(ideal, 4)
 print("Czas wykonania: %s" % (time.time() - s))
