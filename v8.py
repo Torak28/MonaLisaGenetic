@@ -134,10 +134,12 @@ def find_median_colorS(N, x, y, w, h):
     tmp = Image.new('L', N.size)
     ret = ImageDraw.Draw(tmp)
 
+    '''
     if x < 0:
         x = 0
     if y < 0:
         y = 0
+    '''
 
     ret.rectangle(((x, y), (w, h)), outline=1, fill=1)
     median = ImageStat.Stat(N, mask=tmp).median
@@ -153,9 +155,11 @@ def find_median_colorP(N, tup):
     tmp = Image.new('L', N.size)
     ret = ImageDraw.Draw(tmp)
 
+    '''
     chg = [list(x) for x in tup]
     chg = [toPositive(x) for x in chg]
     tup = tuple(tuple(x) for x in chg)
+    '''
 
     ret.polygon(tup, outline=1, fill=1)
     median = ImageStat.Stat(N, mask=tmp).median
@@ -165,10 +169,12 @@ def find_median_colorE(N, x, y, w, h):
     tmp = Image.new('L', N.size)
     ret = ImageDraw.Draw(tmp)
 
+    '''
     if x < 0:
         x = 0
     if y < 0:
         y = 0
+    '''
 
     ret.ellipse(((x, y), (w, h)), outline=1, fill=1)
     median = ImageStat.Stat(N, mask=tmp).median
@@ -253,7 +259,7 @@ def mutate(pop, pop_size, pop_it, org):
         if random.random() < pop_it:
             figure = random.random()
             if figure < 0.3:
-                pop[i]['pic'] = square(org, pop[i]['pic'])
+               pop[i]['pic'] = square(org, pop[i]['pic'])
             elif figure > 0.3 and figure < 0.6:
                 pop[i]['pic'] = polygon(org, pop[i]['pic'])
             else:
@@ -385,7 +391,7 @@ Główna pętla programu
 '''
 if __name__ == '__main__':
     # read image as RGB and add alpha (transparency)
-    ideal = Image.open("test.png").convert("RGBA")
+    ideal = Image.open("MonaLisa.png").convert("RGBA")
 
     # Sterowanie
     ilosc_w_populacji = 20
