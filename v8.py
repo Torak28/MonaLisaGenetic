@@ -1,4 +1,4 @@
-import random, operator, math, os, time, queue, multiprocessing
+import random, operator, math, os, time
 from PIL import Image, ImageDraw, ImageChops, ImageStat
 
 def crop256(org):
@@ -316,7 +316,9 @@ def printPop(pop, it, strx):
     print(ret)
 
 def assemble(mode, mona, tab):
-    if mode == 4:
+    if mode == 1:
+        ret = tab[0]
+    elif mode == 4:
         ret = assemble4(mona, tab)
     elif mode == 16:
         ret = assemble16(mona, tab)
@@ -334,7 +336,9 @@ def assemble(mode, mona, tab):
 def run(mona, mode):
 
     monaCrop = []
-    if mode == 4:
+    if mode == 1:
+        monaCrop.append(mona)
+    elif mode == 4:
         monaCrop = crop4(mona)
     elif mode == 16:
         monaCrop = crop16(mona)
@@ -380,7 +384,7 @@ def run(mona, mode):
             # Krzyzowanie i nowa populacja
             wszystkiePopulacje[m] = crossover(wszystkiePopulacje[m], pola_rozrodcza)
         bstYet = assemble(mode, mona, bst)
-        bstYet.save(disk + '/' + folder + '/m '+ str(p) + '.bmp')
+        bstYet.save(disk + '/' + folder + '/m '+ str(p) + '.png')
     return bstYet
 
 '''
@@ -388,18 +392,19 @@ Główna pętla programu
 '''
 if __name__ == '__main__':
     # read image as RGB and add alpha (transparency)
-    ideal = Image.open("MonaLisa.png").convert("RGBA")
+    ideal = Image.open("test.png").convert("RGBA")
 
     # Sterowanie
-    ilosc_w_populacji = 150
-    ilosc_petli = 1000
+    ilosc_w_populacji = 10
+    ilosc_petli = 100
     wspolczynnik_mutacji = 0.1
     wartosc_alphy = 126
-    folder = "INZ10v8"
+    folder = "test"
     disk = "D:/INZ2"
     out = disk + "/" + folder + "/out.txt"
 
     s = time.time()
-    result = run(ideal, 256)
+    result = run(ideal, 64)
     print("Czas wykonania: %s" % (time.time() - s))
     result.save(disk + "/" + folder + "/output.bmp")
+    print(distance2(ideal, result))
