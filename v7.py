@@ -361,14 +361,14 @@ Główna pętla programu
 
 # read image as RGB and add alpha (transparency)
 ideal = Image.open("MonaLisa.png").convert("RGBA")
-m = crop64(ideal)
+m = crop256(ideal)
 
 # Sterowanie
 ilosc_w_populacji = 20
-ilosc_petli = 20
+ilosc_petli = 10
 wspolczynnik_mutacji = 0.1
 wartosc_alphy = 126
-folder = "INZ9v6"
+folder = "test"
 disk = "D:/INZ2"
 
 if not os.path.exists(disk):
@@ -377,10 +377,10 @@ if not os.path.exists(disk):
 out = disk + "/" + folder + "/out.txt"
 
 a = []
-for i in range(1, 65):
+for i in range(1, 257):
     a.append(run(m[i - 1], 'm' + str(i)))
 
-ass = assemble64(ideal, a)
+ass = assemble256(ideal, a)
 ass.save(disk + "/" + folder + "/output.bmp")
 
 bss = Image.open(disk + "/INZ6v4/output.png").convert("RGBA")
