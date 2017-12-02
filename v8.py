@@ -10,7 +10,6 @@ def crop256(org):
 
     return ret256
 
-
 def crop64(org):
     ret16 = crop16(org)
 
@@ -20,7 +19,6 @@ def crop64(org):
 
     return ret64
 
-
 def crop16(org):
     ret4 = crop4(org)
     ret16 = crop4(ret4[0])
@@ -29,7 +27,6 @@ def crop16(org):
     ret16.extend(crop4(ret4[3]))
 
     return ret16
-
 
 def assemble256(org, tab):
     org1 = crop4(org)
@@ -45,7 +42,6 @@ def assemble256(org, tab):
 
     return ret
 
-
 def assemble64(org, tab):
     org1 = crop4(org)
 
@@ -60,7 +56,6 @@ def assemble64(org, tab):
 
     return ret
 
-
 def assemble16(org, tab):
     org1 = crop4(org)
 
@@ -74,7 +69,6 @@ def assemble16(org, tab):
     ret = assemble4(org, pic)
 
     return ret
-
 
 def crop4(org):
     ret = []
@@ -92,7 +86,6 @@ def crop4(org):
 
     return ret
 
-
 def assemble4(org, tab):
     ret = Image.new('RGBA', org.size)
 
@@ -103,18 +96,16 @@ def assemble4(org, tab):
     leftB = 0, height // 2, width // 2, height
     rightB = width // 2, height // 2, width, height
 
-    ret.paste(tab[0], leftT, mask=tab[0])
-    ret.paste(tab[1], rightT, mask=tab[1])
-    ret.paste(tab[2], leftB, mask=tab[2])
-    ret.paste(tab[3], rightB, mask=tab[3])
+    ret.paste(tab[0], leftT)
+    ret.paste(tab[1], rightT)
+    ret.paste(tab[2], leftB)
+    ret.paste(tab[3], rightB)
 
     return ret
-
 
 def darkPicture(N):
-    ret = Image.new('RGBA', N.size, (255, 255, 255, 255))
+    ret = Image.new('RGBA', N.size, (0, 0, 0, 0))
     return ret
-
 
 def reduce(function, iterable, initializer=None):
     "Funkcja z Pythona 2.7"
@@ -129,41 +120,33 @@ def reduce(function, iterable, initializer=None):
         accum_value = function(accum_value, x)
     return accum_value
 
-
 def distance2(org, N):
     "Calculate the root-mean-square difference between two images" \
     "http://effbot.org/zone/pil-comparing-images.htm"
 
     h = ImageChops.difference(org, N).histogram()
 
-    # calculate rms
-    ret = math.sqrt(reduce(operator.add,
-                           map(lambda h, i: h * (i ** 2), h, range(256))
-                           ) / (float(org.size[0]) * org.size[1]))
+    ret = math.sqrt(reduce(operator.add, map(lambda h, i: h * (i ** 2), h, range(256))) / (float(org.size[0]) * org.size[1]))
 
     return ret
-
 
 def find_median_colorS(N, x, y, w, h):
     tmp = Image.new('L', N.size)
     ret = ImageDraw.Draw(tmp)
 
     if x < 0:
-        x = 1
+        x = 0
     if y < 0:
-        y = 1
-
+        y = 0
 
     ret.rectangle(((x, y), (w, h)), outline=1, fill=1)
     median = ImageStat.Stat(N, mask=tmp).median
-    if (sum(median) < 270):
-        print("S Czarno! %" % median)
     return median
 
-def abs2(list):
+def toPositive(list):
     ret = []
     for _ in range(len(list)):
-        ret.append(1)
+        ret.append(0)
     return ret
 
 def find_median_colorP(N, tup):
@@ -171,31 +154,25 @@ def find_median_colorP(N, tup):
     ret = ImageDraw.Draw(tmp)
 
     chg = [list(x) for x in tup]
-    chg = [abs2(x) for x in chg]
+    chg = [toPositive(x) for x in chg]
     tup = tuple(tuple(x) for x in chg)
 
     ret.polygon(tup, outline=1, fill=1)
     median = ImageStat.Stat(N, mask=tmp).median
-    if (sum(median) < 270):
-        print("P Czarno! %" % median)
     return median
-
 
 def find_median_colorE(N, x, y, w, h):
     tmp = Image.new('L', N.size)
     ret = ImageDraw.Draw(tmp)
 
     if x < 0:
-        x = 1
+        x = 0
     if y < 0:
-        y = 1
+        y = 0
 
     ret.ellipse(((x, y), (w, h)), outline=1, fill=1)
     median = ImageStat.Stat(N, mask=tmp).median
-    if(sum(median) < 270):
-        print("E Czarno! %" % median)
     return median
-
 
 # Mutacja
 def ellipse(org, N):
@@ -221,7 +198,6 @@ def ellipse(org, N):
     N = Image.alpha_composite(N, tmp)
     return N
 
-
 def square(org, N):
     tmp = Image.new('RGBA', N.size)
     ret = ImageDraw.Draw(tmp)
@@ -239,12 +215,11 @@ def square(org, N):
     R = col[0]
     G = col[1]
     B = col[2]
-    A = random.randint(wartosc_alphy-20, wartosc_alphy)
+    A = random.randint(0, wartosc_alphy)
     ret.rectangle(((x, y), (w, h)), fill=(R, G, B, A))
     N.paste(tmp, mask=tmp)
     N = Image.alpha_composite(N, tmp)
     return N
-
 
 def polygon(org, N):
     tmp = Image.new('RGBA', N.size)
@@ -264,17 +239,14 @@ def polygon(org, N):
     N = Image.alpha_composite(N, tmp)
     return N
 
-
 # Krzyżowanie
 def Add(P1, P2):
     ret = Image.alpha_composite(P1, P2)
     return ret
 
-
 def mapFromTo(x, a, b, c, d):
     ret = (x - a) / (b - a) * (d - c) + c
     return ret
-
 
 def mutate(pop, pop_size, pop_it, org):
     for i in range(pop_size):
@@ -288,12 +260,10 @@ def mutate(pop, pop_size, pop_it, org):
                 pop[i]['pic'] = ellipse(org, pop[i]['pic'])
     return pop
 
-
 def score(pop, pop_size, mona):
     for i in range(pop_size):
         pop[i]['fit'] = distance2(mona, pop[i]['pic'])
     return pop
-
 
 def matingpool(pop, pop_size):
     pop = sorted(pop, key=lambda x: (x['fit']))
@@ -310,7 +280,6 @@ def matingpool(pop, pop_size):
             ret.append(pop[k])
     return ret
 
-
 def crossover(pop, pool):
     ret = []
     for i in range(len(pop)):
@@ -321,14 +290,12 @@ def crossover(pop, pool):
         ret.append(child)
     return ret
 
-
 def dump_best(pop):
     best = pop[0]
     for i in range(len(pop)):
         if pop[i]['fit'] < best['fit']:
             best = pop[i]
     return best['pic']
-
 
 def printPop(pop, it, strx):
     f = open(out, 'a')
@@ -354,6 +321,7 @@ def assemble(mode, mona, tab):
     else:
         ret = assemble256(mona, tab)
 
+    ret.thumbnail(ret.size)
     ret.save(disk + "/" + folder + "/output.bmp")
 
     return ret
@@ -403,7 +371,7 @@ def run(mona, mode):
             wszystkiePopulacje[m] = score(wszystkiePopulacje[m], ilosc_w_populacji, monaCrop[m])
             # Zrzucanie najlepszego w populacji
             bst.append(dump_best(wszystkiePopulacje[m]))
-            # printPop(wszystkiePopulacje[m], p, 'm' + str(m))
+            printPop(wszystkiePopulacje[m], p, 'm' + str(m))
             # Tworzenie poli rozrodczej do krzyżowania
             pola_rozrodcza = matingpool(wszystkiePopulacje[m], ilosc_w_populacji)
             # Krzyzowanie i nowa populacja
@@ -420,8 +388,8 @@ if __name__ == '__main__':
     ideal = Image.open("test.png").convert("RGBA")
 
     # Sterowanie
-    ilosc_w_populacji = 10
-    ilosc_petli = 100
+    ilosc_w_populacji = 20
+    ilosc_petli = 20
     wspolczynnik_mutacji = 0.1
     wartosc_alphy = 126
     folder = "test"
@@ -429,7 +397,8 @@ if __name__ == '__main__':
     out = disk + "/" + folder + "/out.txt"
 
     s = time.time()
-    result = run(ideal, 16)
+    result = run(ideal, 256)
     print("Czas wykonania: %s" % (time.time() - s))
+    result.thumbnail(result.size)
     result.save(disk + "/" + folder + "/output.bmp")
     print(distance2(ideal, result))
