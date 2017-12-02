@@ -6,7 +6,8 @@
 
  * wersja okienkowa
  * Napisać automatyzacje do .pyx
- * ogarnąć z tym pisaniem do pliku
+ * ogarnąć z tym pisaniem do pliku DONE
+ * ogarnąć 256 DONE
 
 
 ### Wersje:
