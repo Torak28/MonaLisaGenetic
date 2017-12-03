@@ -377,13 +377,14 @@ def run(mona, mode):
             wszystkiePopulacje[m] = score(wszystkiePopulacje[m], ilosc_w_populacji, monaCrop[m])
             # Zrzucanie najlepszego w populacji
             bst.append(dump_best(wszystkiePopulacje[m]))
-            printPop(wszystkiePopulacje[m], p, 'm' + str(m))
+            # printPop(wszystkiePopulacje[m], p, 'm' + str(m))
             # Tworzenie poli rozrodczej do krzyżowania
             pola_rozrodcza = matingpool(wszystkiePopulacje[m], ilosc_w_populacji)
             # Krzyzowanie i nowa populacja
             wszystkiePopulacje[m] = crossover(wszystkiePopulacje[m], pola_rozrodcza)
         bstYet = assemble(mode, mona, bst)
         bstYet.save(disk + '/' + folder + '/m '+ str(p) + '.bmp')
+        print(distance2(mona, bstYet))
     return bstYet
 
 '''
@@ -403,8 +404,7 @@ if __name__ == '__main__':
     out = disk + "/" + folder + "/out.txt"
 
     s = time.time()
-    result = run(ideal, 256)
+    result = run(ideal, 64)
     print("Czas wykonania: %s" % (time.time() - s))
     result.thumbnail(result.size)
     result.save(disk + "/" + folder + "/output.bmp")
-    print(distance2(ideal, result))
