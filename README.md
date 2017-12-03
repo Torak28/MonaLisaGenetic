@@ -6,8 +6,6 @@
 
  * wersja okienkowa
  * Napisać automatyzacje do .pyx
- * Naprawić kolor
-
 
 ### Wersje:
 
