@@ -90,11 +90,17 @@ def assemble4(org, tab):
     ret = Image.new('RGBA', org.size)
 
     width, height = org.size
-
+    '''
     leftT = 0, 0, width // 2, height // 2
     rightT = width // 2, 0, width, height // 2
     leftB = 0, height // 2, width // 2, height
     rightB = width // 2, height // 2, width, height
+    '''
+
+    leftT = 0, 0
+    rightT = width // 2, 0
+    leftB = 0, height // 2
+    rightB = width // 2, height // 2
 
     ret.paste(tab[0], leftT)
     ret.paste(tab[1], rightT)
@@ -134,13 +140,6 @@ def find_median_colorS(N, x, y, w, h):
     tmp = Image.new('L', N.size)
     ret = ImageDraw.Draw(tmp)
 
-    '''
-    if x < 0:
-        x = 0
-    if y < 0:
-        y = 0
-    '''
-
     ret.rectangle(((x, y), (w, h)), outline=1, fill=1)
     median = ImageStat.Stat(N, mask=tmp).median
     return median
@@ -155,12 +154,6 @@ def find_median_colorP(N, tup):
     tmp = Image.new('L', N.size)
     ret = ImageDraw.Draw(tmp)
 
-    '''
-    chg = [list(x) for x in tup]
-    chg = [toPositive(x) for x in chg]
-    tup = tuple(tuple(x) for x in chg)
-    '''
-
     ret.polygon(tup, outline=1, fill=1)
     median = ImageStat.Stat(N, mask=tmp).median
     return median
@@ -169,19 +162,12 @@ def find_median_colorE(N, x, y, w, h):
     tmp = Image.new('L', N.size)
     ret = ImageDraw.Draw(tmp)
 
-    '''
-    if x < 0:
-        x = 0
-    if y < 0:
-        y = 0
-    '''
-
     ret.ellipse(((x, y), (w, h)), outline=1, fill=1)
     median = ImageStat.Stat(N, mask=tmp).median
     return median
 
 # Mutacja
-def ellipse(org, N):
+def ellipse(org, N, wa):
     tmp = Image.new('RGBA', N.size)
     ret = ImageDraw.Draw(tmp)
     x = random.randint(-20, org.size[0] - 1)
@@ -198,13 +184,13 @@ def ellipse(org, N):
     R = col[0]
     G = col[1]
     B = col[2]
-    A = random.randint(0, wartosc_alphy)
+    A = random.randint(0, wa)
     ret.ellipse(((x, y), (w, h)), fill=(R, G, B, A))
     N.paste(tmp, mask=tmp)
     N = Image.alpha_composite(N, tmp)
     return N
 
-def square(org, N):
+def square(org, N, wa):
     tmp = Image.new('RGBA', N.size)
     ret = ImageDraw.Draw(tmp)
     x = random.randint(-20, org.size[0] - 1)
@@ -221,13 +207,13 @@ def square(org, N):
     R = col[0]
     G = col[1]
     B = col[2]
-    A = random.randint(0, wartosc_alphy)
+    A = random.randint(0, wa)
     ret.rectangle(((x, y), (w, h)), fill=(R, G, B, A))
     N.paste(tmp, mask=tmp)
     N = Image.alpha_composite(N, tmp)
     return N
 
-def polygon(org, N):
+def polygon(org, N, wa):
     tmp = Image.new('RGBA', N.size)
     ret = ImageDraw.Draw(tmp)
     tup = ()
@@ -239,7 +225,7 @@ def polygon(org, N):
     R = col[0]
     G = col[1]
     B = col[2]
-    A = random.randint(0, wartosc_alphy)
+    A = random.randint(0, wa)
     ret.polygon(tup, fill=(R, G, B, A))
     N.paste(tmp, mask=tmp)
     N = Image.alpha_composite(N, tmp)
@@ -254,16 +240,16 @@ def mapFromTo(x, a, b, c, d):
     ret = (x - a) / (b - a) * (d - c) + c
     return ret
 
-def mutate(pop, pop_size, pop_it, org):
+def mutate(pop, pop_size, pop_it, org, wa):
     for i in range(pop_size):
         if random.random() < pop_it:
             figure = random.random()
             if figure < 0.3:
-               pop[i]['pic'] = square(org, pop[i]['pic'])
+               pop[i]['pic'] = square(org, pop[i]['pic'], wa)
             elif figure > 0.3 and figure < 0.6:
-                pop[i]['pic'] = polygon(org, pop[i]['pic'])
+                pop[i]['pic'] = polygon(org, pop[i]['pic'], wa)
             else:
-                pop[i]['pic'] = ellipse(org, pop[i]['pic'])
+                pop[i]['pic'] = ellipse(org, pop[i]['pic'], wa)
     return pop
 
 def score(pop, pop_size, mona):
@@ -303,7 +289,7 @@ def dump_best(pop):
             best = pop[i]
     return best['pic']
 
-def printPop(pop, it, strx):
+def printPop(pop, it, strx, out):
     f = open(out, 'a')
     ret = ""
     ret += "Populacja " + str(strx) + " - " + str(it) + " (" + str(len(pop)) + ") : "
@@ -313,7 +299,13 @@ def printPop(pop, it, strx):
     f.write(ret + "\n")
     print(ret)
 
-def assemble(mode, mona, tab):
+def printOut(idx, maxI, strx, out):
+    f = open(out, 'a')
+    ret = "(" + str(idx) + "/" + str(maxI) + ") Najlepsze dopasowanie: " + str(strx)
+    f.write(ret + "\n")
+    print(ret)
+
+def assemble(mode, mona, tab, disk, folder):
     if mode == 1:
         ret = tab[0]
     elif mode == 4:
@@ -332,7 +324,16 @@ def assemble(mode, mona, tab):
 
     return ret
 
-def run(mona, mode):
+def run(pathToMona, mode, ipop, ipet, wm, wa, d, f, o):
+
+    mona = Image.open(pathToMona).convert("RGBA")
+    ilosc_w_populacji = ipop
+    ilosc_petli = ipet
+    wspolczynnik_mutacji = wm
+    wartosc_alphy = wa
+    folder = f
+    disk = d
+    out = disk + "\\" + o
 
     monaCrop = []
     if mode == 1:
@@ -355,7 +356,9 @@ def run(mona, mode):
         dark.append(darkPicture(monaCrop[_]))
         fit.append(distance2(monaCrop[0], dark[_]))
 
-    if not os.path.exists(disk + "/" + folder):
+    if "\\" in folder and not os.path.exists(disk + "/" + folder):
+        os.makedirs(disk + "/" + folder)
+    elif not os.path.exists(disk + "/" + folder):
         os.mkdir(disk + "/" + folder)
     if not os.path.exists(out):
         open(out, 'w').close()
@@ -372,39 +375,52 @@ def run(mona, mode):
         bst = []
         for m in range(mode):
             # Mutacja
-            wszystkiePopulacje[m] = mutate(wszystkiePopulacje[m], ilosc_w_populacji, wspolczynnik_mutacji, monaCrop[m])
+            wszystkiePopulacje[m] = mutate(wszystkiePopulacje[m], ilosc_w_populacji, wspolczynnik_mutacji, monaCrop[m], wartosc_alphy)
             # Ocena( 0 - 100 )
             wszystkiePopulacje[m] = score(wszystkiePopulacje[m], ilosc_w_populacji, monaCrop[m])
             # Zrzucanie najlepszego w populacji
             bst.append(dump_best(wszystkiePopulacje[m]))
-            # printPop(wszystkiePopulacje[m], p, 'm' + str(m))
             # Tworzenie poli rozrodczej do krzyżowania
             pola_rozrodcza = matingpool(wszystkiePopulacje[m], ilosc_w_populacji)
             # Krzyzowanie i nowa populacja
             wszystkiePopulacje[m] = crossover(wszystkiePopulacje[m], pola_rozrodcza)
-        bstYet = assemble(mode, mona, bst)
+        bstYet = assemble(mode, mona, bst, disk, folder)
         bstYet.save(disk + '/' + folder + '/m '+ str(p) + '.bmp')
-        print(distance2(mona, bstYet))
+        printOut(p + 1, ilosc_petli, distance2(mona, bstYet), out)
     return bstYet
 
-'''
-Główna pętla programu
-'''
+
+def init():
+    mona = str(input("Sciezka do obrazu z rozszerzeniem(np. MonaLisa.png): "))
+    mode = int(input("Tryb podzialu obrazu(1,4,16,64 lub 256): "))
+    ilosc_w_populacji = int(input("Ilosc osobnikow w populacji(np. 20): "))
+    ilosc_petli = int(input("Ilosc iteracji algorytmu(np.20): "))
+    wspolczynnik_mutacji = float(input("Szansa na wystapienie mutacji(liczba zmiennoprzecinkowa od 0 do 1, np. 0.1): "))
+    wartosc_alphy = float(input("Maksymalna wartość kanału alfa(np. 126): "))
+    disk = str(input("Sciezka z dyskiem do zapisu(np. \"D:\\\"): "))
+    folder = str(input("Sciezka do folderu w ktorym maja byc zapisane wyniki(np. \"folder1\\folder2\"): "))
+    out = str(input("Sciezka do pliku gdzie maja byc zapisane wyniki(np. \"folder1\\folder2\\out.txt\"): "))
+    print("\n")
+
+    strt = time.time()
+    run(mona, mode, ilosc_w_populacji, ilosc_petli, wspolczynnik_mutacji, wartosc_alphy, disk, folder, out)
+    print("Czas wykonania: %s" % (time.time() - strt))
+
 if __name__ == '__main__':
-    # read image as RGB and add alpha (transparency)
-    ideal = Image.open("MonaLisa.png").convert("RGBA")
-
-    # Sterowanie
-    ilosc_w_populacji = 20
-    ilosc_petli = 20
-    wspolczynnik_mutacji = 0.1
-    wartosc_alphy = 126
-    folder = "test"
-    disk = "D:/INZ2"
-    out = disk + "/" + folder + "/out.txt"
-
-    s = time.time()
-    result = run(ideal, 64)
-    print("Czas wykonania: %s" % (time.time() - s))
-    result.thumbnail(result.size)
-    result.save(disk + "/" + folder + "/output.bmp")
+    init()
+    '''
+    imgs = ["BFF", "J",  "Stanczyk", "UK2"]
+    for _ in range(len(imgs)):
+        print(imgs[_] + " start!")
+        run(imgs[_] + ".png", 1, 20, 20, 0.1, 126, "E:\\", "INZ2\\" + imgs[_] + "\\1", "INZ2\\" + imgs[_] + "\\1\\out.txt")
+        print("1 done")
+        run(imgs[_] + ".png", 4, 20, 20, 0.1, 126, "E:\\", "INZ2\\" + imgs[_] + "\\4", "INZ2\\" + imgs[_] + "\\4\\out.txt")
+        print("4 done")
+        run(imgs[_] + ".png", 16, 20, 20, 0.1, 126, "E:\\", "INZ2\\" + imgs[_] + "\\16", "INZ2\\" + imgs[_] + "\\16\\out.txt")
+        print("16 done")
+        run(imgs[_] + ".png", 64, 20, 20, 0.1, 126, "E:\\", "INZ2\\" + imgs[_] + "\\64", "INZ2\\" + imgs[_] + "\\64\\out.txt")
+        print("64 done")
+        run(imgs[_] + ".png", 256, 20, 20, 0.1, 126, "E:\\", "INZ2\\" + imgs[_] + "\\256", "INZ2\\" + imgs[_] + "\\256\\out.txt")
+        print("256 done")
+        print(imgs[_] + " done!")
+    '''
