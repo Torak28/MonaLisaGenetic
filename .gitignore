@@ -1,14 +1,5 @@
 #ignored files
-require.txt
-out.png
 .idea/
-
-out2.png
-out3.png
-test.txt
 CythonLib/build
 CythonLib/MonaGen.c
 CythonLib/MonaGen.cp36-win32.pyd
-gif/10th_tun.gif
-gif/8th_run.gif
-gif/9th_run.gif
