@@ -90,12 +90,6 @@ def assemble4(org, tab):
     ret = Image.new('RGBA', org.size)
 
     width, height = org.size
-    '''
-    leftT = 0, 0, width // 2, height // 2
-    rightT = width // 2, 0, width, height // 2
-    leftB = 0, height // 2, width // 2, height
-    rightB = width // 2, height // 2, width, height
-    '''
 
     leftT = 0, 0
     rightT = width // 2, 0
@@ -170,8 +164,8 @@ def find_median_colorE(N, x, y, w, h):
 def ellipse(org, N, wa):
     tmp = Image.new('RGBA', N.size)
     ret = ImageDraw.Draw(tmp)
-    x = random.randint(-20, org.size[0] - 1)
-    y = random.randint(-20, org.size[1] - 1)
+    x = random.randint(-10, org.size[0] - 1)
+    y = random.randint(-10, org.size[1] - 1)
     if x < 0:
         w = random.randint(1, org.size[0] + 20)
     else:
@@ -193,8 +187,8 @@ def ellipse(org, N, wa):
 def square(org, N, wa):
     tmp = Image.new('RGBA', N.size)
     ret = ImageDraw.Draw(tmp)
-    x = random.randint(-20, org.size[0] - 1)
-    y = random.randint(-20, org.size[1] - 1)
+    x = random.randint(-10, org.size[0] - 1)
+    y = random.randint(-10, org.size[1] - 1)
     if x < 0:
         w = random.randint(1, org.size[0] + 20)
     else:
@@ -218,8 +212,8 @@ def polygon(org, N, wa):
     ret = ImageDraw.Draw(tmp)
     tup = ()
     for i in range(0, 3):
-        x = random.randint(-20, org.size[0] + 20)
-        y = random.randint(-20, org.size[1] + 20)
+        x = random.randint(-10, org.size[0] + 20)
+        y = random.randint(-10, org.size[1] + 20)
         tup += ((x, y),)
     col = find_median_colorP(org, tup)
     R = col[0]

@@ -4,9 +4,6 @@
 
 ### ToDo:
 
- * wersja okienkowa
- * Napisać automatyzacje do .pyx
-
 ### Wersje:
 
  * **v1** - pierwsza wersja z kwadratami
