@@ -121,13 +121,8 @@ def reduce(function, iterable, initializer=None):
     return accum_value
 
 def distance2(org, N):
-    "Calculate the root-mean-square difference between two images" \
-    "http://effbot.org/zone/pil-comparing-images.htm"
-
     h = ImageChops.difference(org, N).histogram()
-
     ret = math.sqrt(reduce(operator.add, map(lambda h, i: h * (i ** 2), h, range(256))) / (float(org.size[0]) * org.size[1]))
-
     return ret
 
 def find_median_colorS(N, x, y, w, h):
@@ -374,7 +369,7 @@ def run(pathToMona, mode, ipop, ipet, wm, wa, d, f, o):
             wszystkiePopulacje[m] = score(wszystkiePopulacje[m], ilosc_w_populacji, monaCrop[m])
             # Zrzucanie najlepszego w populacji
             bst.append(dump_best(wszystkiePopulacje[m]))
-            # Tworzenie poli rozrodczej do krzyżowania
+            # Selekcja
             pola_rozrodcza = matingpool(wszystkiePopulacje[m], ilosc_w_populacji)
             # Krzyzowanie i nowa populacja
             wszystkiePopulacje[m] = crossover(wszystkiePopulacje[m], pola_rozrodcza)
