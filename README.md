@@ -1,8 +1,28 @@
 # MonaLisaGenetic
 
-### Czas: do końca października
+Aplikacja realizująca aproksymację obrazu przy pomocy algorytmu genetycznego.
 
-### ToDo:
+Obraz zadany przez użytkownika na początku może być dowolny pod każdym względem. Końcowy obraz jest wynikiem losowego nakładania na siebie figur geometrycznych tak, by możliwie dobrze przypominał obraz źródłowy. Wszystkie parametry pracy programu, tj. współczynnik mutacji, wielkość populacji, czy ilość iteracji, są możliwe do modyfikacji według uznania użytkownika.
+
+Aplikacja dzieli zadany obraz na zadaną przez użytkownika mniejszą ilość obrazów i przybliża je wykorzystując algorytm genetyczny. Pseudokod algorytmu wygląda następująco:
+
+```
+1. Losowanie populacji początkowej złożonej z X osobników
+2. Jeśli nie koniec to:
+	a. Mutacja
+	b. Ocena wszystkich osobników
+	c. Dopóki nowa populacja nie ma X chromosomów:
+		A. Selekcja
+		B. Krzyżowanie
+		C. Dodanie do nowej populacji
+	c. Zamiana starej populacji na nowa
+```
+
+### Wynik dzialania Programu w zależności od przyjętego trybu:
+
+![alt](https://i.imgur.com/PMnPf3L.png)
+
+Czas generacji: ok. 20 min
 
 ### Wersje:
 
@@ -15,12 +35,3 @@
  * **v7** - siódma wersja z podziałem na 256 i nowym sposobem pisania od pliku. Sam podział poprawiony.
  * **v8** - ósma wersja z równoległym wykonaniem i naprawionymi kolorami.
  * **v9** - dziewiąta wersja z wykorzystaniem Cythona
-
-### Czas
-
-```python
-    import time
-    start_foo = time.time()
-    foo()
-    print("Czas wykonania foo: %s" % (time.time() - start_foo))
-```
